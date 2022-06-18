@@ -28,9 +28,6 @@ class Instrument:
 
 class CreateNote:
     def __init__(self, type, amplitude, frequency, duration, starts, instrument):
-=======
-class CreateNote:
-    def __init__(self, type, amplitude, frequency, duration, starts):
         self.type = type
         self.amplitude = amplitude
         self.frequency = frequency
