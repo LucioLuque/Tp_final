@@ -24,14 +24,10 @@ class Instrument:
                     m[line[0]]=[]
                 else:
                     m[line[0]]=line[1]
-        
         return d, m
 
 class CreateNote:
     def __init__(self, type, amplitude, frequency, duration, starts, instrument):
-=======
-class CreateNote:
-    def __init__(self, type, amplitude, frequency, duration, starts):
         self.type = type
         self.amplitude = amplitude
         self.frequency = frequency
