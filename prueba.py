@@ -29,6 +29,9 @@ class Instrument:
 
 class CreateNote:
     def __init__(self, type, amplitude, frequency, duration, starts, instrument):
+=======
+class CreateNote:
+    def __init__(self, type, amplitude, frequency, duration, starts):
         self.type = type
         self.amplitude = amplitude
         self.frequency = frequency
@@ -55,6 +58,7 @@ A4=CreateNote("A4", 1, 440, 1, 0, piano)
 
 x=A4.x
 y=A4.final_note
+
 plt.plot(x, y)
 plt.grid(True)
 plt.ylabel('Amplitude')
