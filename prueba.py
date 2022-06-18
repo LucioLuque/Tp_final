@@ -24,7 +24,6 @@ class Instrument:
                     m[line[0]]=[]
                 else:
                     m[line[0]]=line[1]
-        
         return d, m
 
 class CreateNote:
