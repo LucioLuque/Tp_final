@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 from scipy.io import wavfile
-
+from modulation import *
 class Instrument:
     def __init__(self, name, filename):
         self.name = name
@@ -49,9 +49,25 @@ class CreateNote:
     def sum_senoidales(self):
         return sum(self.senoidales)
 
-piano=Instrument("piano", "piano.txt")
-A4=CreateNote("A4", 1, 440, 1, 0, piano)
+    def module_note(self):
+        d=self.module
+        l=[]
+        for i in d:
+            print(i)
+            f=moduled(i, self.duration, float(d[i]))
+            f=f*self.final_note
+            l.append(f)
+            plt.plot(self.x, f)
+            plt.grid(True)
+            plt.ylabel('Amplitude')
+            plt.xlabel("Time (s)")
+            plt.show()
 
+
+
+piano=Instrument("piano", "piano.txt")
+A4=CreateNote("A4", 1, 440, 0.27, 0, piano)
+A4.module_note()
 x=A4.x
 y=A4.final_note
 

@@ -1,5 +1,15 @@
 import math
 
+def moduled(name, t, to):
+    if name=="LINEAR":
+        return LINEAR(t, to)
+    elif name=="INVLINEAR":
+        return INVLINEAR(t, to)
+    elif name=="CONSTANT":
+        return CONSTANT(t)
+
+
+
 def CONSTANT(t):
     return 1
 
