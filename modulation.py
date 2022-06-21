@@ -7,8 +7,11 @@ def LINEAR(t, to):
     return t/to
 
 def INVLINEAR(t, to):
-    #completar
-    return 
+    lineal = 1 - (t/to)
+    if lineal >= 0:
+        return lineal 
+    else:
+        return 0 
 
 def SIN(a, f):
     return (1 + a*(math.sin(f)))
