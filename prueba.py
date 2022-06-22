@@ -60,24 +60,18 @@ class CreateNote:
         for idx,ti in enumerate(self.x):
             if ti<=first_time:
                 m[idx]=moduled(list(d.keys())[0], ti, first_time)
-                a[idx]=m[idx]*self.final_note[idx]
                 
             elif ti<=second_time:
                 m[idx]=moduled(list(d.keys())[1],ti, second_time)
-                a[idx]=m[idx]*self.final_note[idx]
+               
             else:
-                m[idx]=moduled(list(d.keys())[2],ti,self.duration)
-                a[idx]=self.final_note[idx]*(m[idx])
-        #a=m*self.final_note
+                m[idx]=moduled(list(d.keys())[2],ti-second_time,self.duration-second_time)
+                
+        a=m*self.final_note
         return a
         
-        
-
-
-            
-
 piano=Instrument("piano", "piano.txt")
-A4=CreateNote("A4", 1, 440, 0.1, 0, piano)
+A4=CreateNote("A4", 1, 440, 2, 0, piano)
 
 x=A4.x
 #y=A4.final_note
