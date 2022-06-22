@@ -1,13 +1,24 @@
 import math
 
+def moduled(name, t, t0):
+    if name=='LINEAR':
+        return LINEAR(t,t0)
+    elif name=='INVLINEAR':
+        return INVLINEAR(t,t0)
+    elif name=='CONSTANT':
+        return CONSTANT(t)
+    
+
+
+
 def CONSTANT(t):
     return 1
 
-def LINEAR(t, to):
-    return t/to
+def LINEAR(t, t0):
+    return t/t0
 
-def INVLINEAR(t, to):
-    lineal = 1 - (t/to)
+def INVLINEAR(t, t0):
+    lineal = (1 - (t/t0))
     if lineal >= 0:
         return lineal 
     else:
@@ -16,40 +27,40 @@ def INVLINEAR(t, to):
 def SIN(a, f):
     return (1 + a*(math.sin(f)))
 
-def EXP(t, to):
-    return ((math.e)**((5*(t - to))/(to)))
+def EXP(t, t0):
+    return ((math.e)**((5*(t - t0))/(t0)))
 
-def INVEXP(t,to):
-    return ((math.e)**((-5*t)/to))
+def INVEXP(t,t0):
+    return ((math.e)**((-5*t)/t0))
 
-def QUARTCOS(t, to):
-    return math.cos(((math.pi)*t)/(2*to))
+def QUARTCOS(t, t0):
+    return math.cos(((math.pi)*t)/(2*t0))
 
-def QUARTSIN(t, to):
-    return math.sin(((math.pi)*t)/(2*to))
+def QUARTSIN(t, t0):
+    return math.sin(((math.pi)*t)/(2*t0))
 
-def HALFCOS(t, to):
-    return ((1 + math.cos(((math.pi)*t)/(2*to)))/2)
+def HALFCOS(t, t0):
+    return ((1 + math.cos(((math.pi)*t)/(2*t0)))/2)
 
-def HALFSIN(t, to):
-    return ((1 + math.cos((math.pi)*((t/to)-(1/2))))/2)
+def HALFSIN(t, t0):
+    return ((1 + math.cos((math.pi)*((t/t0)-(1/2))))/2)
 
-def LOG(t ,to):
-    return (math.log10(((9*t)/to)+1))
+def LOG(t ,t0):
+    return (math.log10(((9*t)/t0)+1))
 
-def INVLOG(t, to):
-    if t < to:
-        return (math.log10(((-9*t)/to)+10))
+def INVLOG(t, t0):
+    if t < t0:
+        return (math.log10(((-9*t)/t0)+10))
     else:
         return 0
 
-def TRI(t, to, t1, a1):
+def TRI(t, t0, t1, a1):
     if t < t1:
         return ((t*a1)/t1)
     elif t > t1:
-        return (((t-t1)/(t1-to))+a1)
+        return (((t-t1)/(t1-t0))+a1)
 
-def PULSE(t, to, t1, a1):
+def PULSE(t, t0, t1, a1):
     #completar
     return
 
