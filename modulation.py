@@ -1,59 +1,68 @@
 import math
 import numpy as np
 
+class ModulationFunctions:
+    def __init__(self):
+        pass
 
-def CONSTANT(t):
-    return 1
+    def moduled(self, name, t, t0):
+        if name=='LINEAR':
+            return self.LINEAR(t,t0)
+        elif name=='INVLINEAR':
+            return self.INVLINEAR(t,t0)
+        elif name=='CONSTANT':
+            return self.CONSTANT(t) 
 
-def LINEAR(t, to):
-    return t/to
+    def CONSTANT(self, t):
+        return 1
 
-def INVLINEAR(t, to):
-    lineal = 1 - (t/to)
-    if lineal >= 0:
-        return lineal 
-    else:
-        return 0 
+    def LINEAR(self,t, t0):
+        return t/t0
 
-def SIN(a, f):
-    return (1 + a*(math.sin(f)))
+    def INVLINEAR(self,t, t0):
+        lineal = (1 - (t/t0))
+        if lineal >= 0:
+            return lineal 
+        else:
+            return 0 
 
-def EXP(t, to):
-    return ((math.e)**((5*(t - to))/(to)))
+    def SIN(self,a, f):
+        return (1 + a*(math.sin(f)))
 
-def INVEXP(t,to):
-    return ((math.e)**((-5*t)/to))
+    def EXP(self,t, t0):
+        return ((math.e)**((5*(t - t0))/(t0)))
 
-def QUARTCOS(t, to):
-    return math.cos(((math.pi)*t)/(2*to))
+    def INVEXP(self,t,t0):
+        return ((math.e)**((-5*t)/t0))
 
-def QUARTSIN(t, to):
-    return math.sin(((math.pi)*t)/(2*to))
+    def QUARTCOS(self,t, t0):
+        return math.cos(((math.pi)*t)/(2*t0))
 
-def HALFCOS(t, to):
-    return ((1 + math.cos(((math.pi)*t)/(2*to)))/2)
+    def QUARTSIN(self,t, t0):
+        return math.sin(((math.pi)*t)/(2*t0))
 
-def HALFSIN(t, to):
-    return ((1 + math.cos((math.pi)*((t/to)-(1/2))))/2)
+    def HALFCOS(self,t, t0):
+        return ((1 + math.cos(((math.pi)*t)/(2*t0)))/2)
 
-def LOG(t ,to):
-    return (math.log10(((9*t)/to)+1))
+    def HALFSIN(self,t, t0):
+        return ((1 + math.cos((math.pi)*((t/t0)-(1/2))))/2)
 
-def INVLOG(t, to):
-    if t < to:
-        return (math.log10(((-9*t)/to)+10))
-    else:
-        return 0
+    def LOG(self,t ,t0):
+        return (math.log10(((9*t)/t0)+1))
 
-def TRI(t, to, t1, a1):
-    if t < t1:
-        return ((t*a1)/t1)
-    elif t > t1:
-        return (((t-t1)/(t1-to))+a1)
+    def INVLOG(self,t, t0):
+        if t < t0:
+            return (math.log10(((-9*t)/t0)+10))
+        else:
+            return 0
 
-def PULSES(t, to, t1, a1):
-    t2= (t/to)- abs(t/to)
-    return np.min(abs(((1-a1)/t1)*(t2-to-t1))+a1)
+    def TRI(self,t, t0, t1, a1):
+        if t < t1:
+            return ((t*a1)/t1)
+        elif t > t1:
+            return (((t-t1)/(t1-t0))+a1)
 
-
+    def PULSES(self,t, t0, t1, a1):
+        t2= (t/t0) -abs(t/t0)
+        return np.min(abs(((1-a1)/t1)*(t2-t0-t1))+a1)
 
