@@ -60,9 +60,8 @@ class ArmonicNote:
         return self.modulated_note.change_note(armonic_note, x)
 
 class CreateNote:
-    def __init__(self, type, amplitude, frequency, duration, starts, instrument):
+    def __init__(self, type, frequency, duration, starts, instrument):
         self.type = type
-        self.amplitude = amplitude
         self.frequency = frequency
         self.duration = duration
         self.starts = starts

@@ -3,13 +3,14 @@ import numpy as np
 from scipy.io import wavfile
 from note import *
 from instrument import *
+from sintetizador import *
 
 instrument=Instrument("piano", "piano.txt")
 print(instrument.armonics, instrument.modulations)
+sintetizador=Sintetizador("queen2.txt", instrument)
 
-Note=CreateNote("A4", 1, 440, 0.1, 0, instrument)
-x=Note.x
-y=Note.change_note()
+y=sintetizador.list_compose
+x=sintetizador.x
 
 plt.plot(x, y)
 plt.grid(True)
