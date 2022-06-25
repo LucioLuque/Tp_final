@@ -1,4 +1,6 @@
 import math
+import numpy as np
+
 
 def CONSTANT(t):
     return 1
@@ -49,8 +51,9 @@ def TRI(t, to, t1, a1):
     elif t > t1:
         return (((t-t1)/(t1-to))+a1)
 
-def PULSE(t, to, t1, a1):
-    #completar
-    return
+def PULSES(t, to, t1, a1):
+    t2= (t/to)- abs(t/to)
+    return np.min(abs(((1-a1)/t1)*(t2-to-t1))+a1)
+
 
 
