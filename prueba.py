@@ -63,7 +63,7 @@ class CreateNote:
         self.frequency = frequency
         self.duration = duration
         self.starts = starts
-        self.x=np.linspace(0, self.duration, 44100*self.duration)
+        self.x=np.linspace(0, self.duration,int(44100*self.duration))
         self.armonicos=instrument.armonicos
         self.senoidales=self.get_senoidales()
         self.final_note=self.sum_senoidales()
@@ -73,28 +73,39 @@ class CreateNote:
         d=self.armonicos
         senoidales=[]
         for i in d:
-            senoidales.append(d[i] * np.sin( (2*np.pi*i*self.frequency * self.x)))
-        return (senoidales)
+            senoidales.append(d[i] * np.sin(( (2*np.pi*i*self.frequency * self.x))))
+        return senoidales
 
     def sum_senoidales(self):
         return sum(self.senoidales)
-    
+        
     def module_note(self):
         d=self.module
-        first_time=d.values[0]
-        m =np.zeros(int(44100*self.duration))
-        for idx, ti in enumerate(self.x):
-            if ti <=
+        print(d.values())
+        first_time=float(list(d.values())[0])
+        second_time=self.duration-float(list(d.values())[2])
+        print(first_time,second_time)
+        m=np.zeros(int(44100*self.duration))
+        a=np.zeros(int(44100*self.duration))
+        for idx,ti in enumerate(self.x):
+            if ti<=first_time:
+                m[idx]=moduled(list(d.keys())[0], ti, first_time)
+                
+            elif ti<=second_time:
+                m[idx]=moduled(list(d.keys())[1],ti, second_time)
+               
+            else:
+                m[idx]=moduled(list(d.keys())[2],ti-second_time,self.duration-second_time)
+                
+        a=m*self.final_note
+        return a
         
-        
-        
-
-
 piano=Instrument("piano", "piano.txt")
-A4=CreateNote("A4", 1, 440, 0.027, 0, piano)
-#A4.module_note()
+A4=CreateNote("A4", 1, 440, 2, 0, piano)
+
 x=A4.x
-y=A4.final_note
+#y=A4.final_note
+y=A4.module_note()
 
 plt.plot(x, y)
 plt.grid(True)
