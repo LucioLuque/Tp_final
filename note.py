@@ -23,12 +23,14 @@ class ModulatedNote:
         func=ModulationFunctions()
         
         m= np.zeros(int(44100*self.duration))
-        a= np.zeros(int(44100*self.duration))
+        
         for idx,ti in enumerate(x):
             if ti<=first_time:
+                
                 m[idx]=func.moduled(keys[0], ti, first_time)
                 
             elif ti<=second_time:
+                
                 m[idx]=func.moduled(keys[1],ti, second_time)
                
             else:
@@ -60,9 +62,8 @@ class ArmonicNote:
         return self.modulated_note.change_note(armonic_note, x)
 
 class CreateNote:
-    def __init__(self, type, amplitude, frequency, duration, starts, instrument):
+    def __init__(self, type, frequency, duration, starts, instrument):
         self.type = type
-        self.amplitude = amplitude
         self.frequency = frequency
         self.duration = duration
         self.starts = starts
