@@ -7,7 +7,7 @@ from sintetizador import *
 
 instrument=Instrument("piano", "piano.txt")
 print(instrument.armonics, instrument.modulations)
-sintetizador=Sintetizador("queen2.txt", instrument)
+sintetizador=Sintetizador("queen.txt", instrument)
 
 y=sintetizador.list_compose
 x=sintetizador.x

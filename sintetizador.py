@@ -29,9 +29,13 @@ class Sintetizador:
             song_duration=float(last[0])+float(last[2])
             lista_vacia=np.zeros(int(song_duration*44100))
             composed_list=lista_vacia
+            y=[]
+            
+            
+            
             for line in lines:
                 number=1
-                empty_composition=lista_vacia
+                empty_composition=np.zeros(int(song_duration*44100))
                 line=line.strip().split(' ')
                 starts=float(line[0])
                 type=line[1]
@@ -48,13 +52,18 @@ class Sintetizador:
 
             
 
-                composed_list=np.sum([composed_list, empty_composition], axis=0)
+                composed_list=sum([composed_list, empty_composition])
+                
+                
+                
             self.list_compose=composed_list
+            #self.list_compose=composed_list
             self.x=np.linspace(0, song_duration, len(composed_list))
             print(number)
 
-    
+            
 
+           
 
     def create_note(self, type, duration, starts, instrument):
         frequency=function(type)

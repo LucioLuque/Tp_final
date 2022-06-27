@@ -23,12 +23,14 @@ class ModulatedNote:
         func=ModulationFunctions()
         
         m= np.zeros(int(44100*self.duration))
-        a= np.zeros(int(44100*self.duration))
+        
         for idx,ti in enumerate(x):
             if ti<=first_time:
+                
                 m[idx]=func.moduled(keys[0], ti, first_time)
                 
             elif ti<=second_time:
+                
                 m[idx]=func.moduled(keys[1],ti, second_time)
                
             else:

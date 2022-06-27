@@ -9,6 +9,12 @@ s=2
 empty_composition[s:e]=note
 print(empty_composition)
 
+x=sum([lista_final, empty_composition])
+print(x)
+
+
+
+
 """
 l1=empty_composition[0:s]
 print(l1)
