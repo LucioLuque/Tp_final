@@ -29,19 +29,7 @@ class ModulatedNote:
         m[:int(44100*first_time)]=func.moduled(keys[0], x[:int(44100*first_time)], first_time)
         m[int(44100*first_time):int(44100*second_time)]=func.moduled(keys[1], x[int(44100*first_time):int(44100*second_time)], second_time)
         m[int(44100*second_time):]=func.moduled(keys[2], x[int(44100*second_time):]-second_time, self.duration-second_time)
-        """
-        for idx,ti in enumerate(x):
-            if ti<=first_time:
-                
-                m[idx]=func.moduled(keys[0], ti, first_time)
-                
-            elif ti<=second_time:
-                
-                m[idx]=func.moduled(keys[1],ti, second_time)
-               
-            else:
-                m[idx]=func.moduled(keys[2],ti-second_time,self.duration-second_time)
-        """
+        
         a=m*armonic_note
         
         return a
