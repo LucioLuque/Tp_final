@@ -1,6 +1,8 @@
 import math
 import numpy as np
+
 from datetime import datetime
+
 class ModulationFunctions:
     def __init__(self):
         pass
@@ -72,3 +74,4 @@ class ModulationFunctions:
     def PULSES(self,t, t0, t1, a1):
         t2= (t/t0) -abs(t/t0)
         return np.min(abs(((1-a1)/t1)*(t2-t0-t1))+a1)
+
