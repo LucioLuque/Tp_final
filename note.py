@@ -11,19 +11,25 @@ class ModulatedNote:
     def divide_modulation(self):
         modulation= self.instrument.modulations
         values= list(modulation.values())
-        #print(modulation.values())
-        first_time= float(values[0])
-        second_time= self.duration-float(values[2])
-        #print(first_time,second_time)
+        first_time= values[0]
+        second_time= self.duration-values[2]
+        
         return modulation, first_time, second_time
     
     def modulation(self, armonic_note, x):
+        
         modulation, first_time, second_time= self.divide_modulation()
         keys= list(modulation.keys())
         func=ModulationFunctions()
         
-        m= np.zeros(int(44100*self.duration))
+        m= np.zeros(int(44100*(self.duration)))
         
+        
+
+        m[:int(44100*first_time)]=func.moduled(keys[0], x[:int(44100*first_time)], first_time)
+        m[int(44100*first_time):int(44100*second_time)]=func.moduled(keys[1], x[int(44100*first_time):int(44100*second_time)], second_time)
+        m[int(44100*second_time):]=func.moduled(keys[2], x[int(44100*second_time):]-second_time, self.duration-second_time)
+        """
         for idx,ti in enumerate(x):
             if ti<=first_time:
                 
@@ -35,8 +41,9 @@ class ModulatedNote:
                
             else:
                 m[idx]=func.moduled(keys[2],ti-second_time,self.duration-second_time)
-                
+        """
         a=m*armonic_note
+        
         return a
         
 
@@ -52,10 +59,12 @@ class ArmonicNote:
 
     def get_armonic(self, x):
         d=self.instrument.armonics
-        armonics=[]
+        armonics=np.zeros(len(x))
         for i in d:
-            armonics.append(d[i] * np.sin(( (2*np.pi*i*self.frequency * x))))
-        return sum(armonics)
+            armonics+=(d[i] * np.sin(( (2*np.pi*i*self.frequency * x))))
+    
+        return armonics
+        
 
     def change_note(self, x):
         armonic_note=self.get_armonic(x)
@@ -68,10 +77,11 @@ class CreateNote:
         self.duration = duration
         self.starts = starts
         self.instrument= instrument
-
+        
         self.x=np.linspace(0, self.duration,int(44100*self.duration))
 
         self.armonic_note=ArmonicNote(self.frequency, self.duration ,self.instrument)
         
     def change_note(self):
         return self.armonic_note.change_note(self.x)
+
