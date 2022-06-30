@@ -1,13 +1,20 @@
 import matplotlib.pyplot as plt
-import numpy as np
 from scipy.io import wavfile
 from note import *
 from instrument import *
 from sintetizador import *
+from note import *
 
-instrument=Instrument("piano", "piano.txt")
-print(instrument.armonics, instrument.modulations)
-sintetizador=Sintetizador("queen.txt", instrument)
+
+#instrument=Instrument("piano", "piano.txt")
+instanteInicial = datetime.now()
+
+sintetizador=Sintetizador("queen.txt", "piano.txt")
+
+instanteFinal = datetime.now()
+tiempo = instanteFinal - instanteInicial
+print(tiempo)
+
 
 y=sintetizador.list_compose
 x=sintetizador.x

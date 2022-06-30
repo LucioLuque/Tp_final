@@ -1,6 +1,8 @@
 import math
 import numpy as np
 
+from datetime import datetime
+
 class ModulationFunctions:
     def __init__(self):
         pass
@@ -20,11 +22,18 @@ class ModulationFunctions:
         return t/t0
 
     def INVLINEAR(self,t, t0):
+        
+
+
         lineal = (1 - (t/t0))
-        if lineal >= 0:
-            return lineal 
-        else:
-            return 0 
+        for idx, i in enumerate(lineal):
+            if i <0:
+                lineal[idx:]=0
+                # al final de la partida
+                
+                break
+
+        return lineal
 
     def SIN(self,a, f):
         return (1 + a*(math.sin(f)))
