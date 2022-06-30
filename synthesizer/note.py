@@ -1,3 +1,4 @@
+
 import numpy as np
 from modulation import *
 
@@ -11,6 +12,7 @@ class ModulatedNote:
         values= list(modulation.values())
         first_time= values[0]
         second_time= self.duration-values[2]
+
         return modulation, first_time, second_time
     
     def modulation(self, armonic_note, array_of_note):
@@ -47,5 +49,4 @@ class CreateArrayNote:
 
     def array_of_note(self):
         return np.linspace(0, self.duration,int(44100*self.duration))
-
 

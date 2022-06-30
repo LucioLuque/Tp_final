@@ -2,6 +2,7 @@ import numpy as np
 from modulation import *
 from notes import *
 from note import *
+
 from read_files import *
 from scipy.io import wavfile
 
