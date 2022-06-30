@@ -2,7 +2,8 @@ import numpy as np
 from modulation import *
 from notes import *
 from note import *
-from instrument import *
+
+from read_files import *
 from scipy.io import wavfile
 
 class Synthesizer:
@@ -10,7 +11,8 @@ class Synthesizer:
 
         self.filename_partiture = filename_partiture
         self.filename_instrument = filename_instrument
-        
+        self.create_wav()
+
     def read_partiture(self):
         return ReadPartiture(self.filename_partiture).read_partiture()
 

@@ -1,20 +1,18 @@
-import matplotlib.pyplot as plt
+
 import numpy as np
-from scipy.io import wavfile
 from modulation import *
 
 class ModulatedNote:
     def __init__(self, duration, modulations):
         self.duration= duration
         self.modulations= modulations
-        
 
     def divide_modulation(self):
         modulation= self.modulations
         values= list(modulation.values())
         first_time= values[0]
         second_time= self.duration-values[2]
-        
+
         return modulation, first_time, second_time
     
     def modulation(self, armonic_note, array_of_note):
@@ -51,6 +49,4 @@ class CreateArrayNote:
 
     def array_of_note(self):
         return np.linspace(0, self.duration,int(44100*self.duration))
-    #def armonic_note(self):
-        #return ArmonicNote(self.frequency, self.duration,self.instrument).change_note(self.array_of_note)
 
