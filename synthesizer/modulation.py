@@ -22,14 +22,7 @@ class ModulationFunctions:
         return t/t0
 
     def INVLINEAR(self,t, t0):
-        
-
-
         lineal = (1 - (t/t0))
-        for idx, i in enumerate(lineal):
-            if i <0:
-                lineal[idx:]=0 
-                break
         return lineal
 
     def SIN(self,a, f):

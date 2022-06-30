@@ -8,7 +8,7 @@ class ReadInstrument:
         
         with open (self.filename, 'r') as f:
             amount_armonics= int(f.readline())
-            for line in range(1,amount_armonics+1):
+            for line in range(0,amount_armonics):
                 line=f.readline().strip().split(" ")
                 armonics[int(line[0])]= float(line[1])
 
@@ -30,8 +30,7 @@ class ReadPartiture:
         
     def read_partiture(self):
         list_of_notes = []
-        with open (self.filename_partiture, 'r') as f:
-            
+        with open (self.filename_partiture, 'r') as f:  
             for line in f:
                 line=line.strip().split(' ')
                 starts=float(line[0])
