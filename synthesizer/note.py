@@ -1,3 +1,4 @@
+
 import numpy as np
 from modulation import *
 from matplotlib import pyplot as plt
@@ -48,5 +49,4 @@ class CreateArrayNote:
 
     def array_of_note(self):
         return np.linspace(0, self.duration,int(44100*self.duration))
-
 

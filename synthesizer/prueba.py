@@ -13,5 +13,6 @@ s=Synthesizer("una.txt", "piano.txt")
 
 #sintetizador=Synthesizer("queen.txt", "piano.txt").create_wav()
 
+
 instanteFinal = datetime.now()
 print(instanteFinal - instanteInicial)

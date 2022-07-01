@@ -33,7 +33,6 @@ class ModulationFunctions:
             return self.TRI(t,t0,a1)
         elif name=='PULSES':
             return self.PULSES(t,t0,a1)
-        
 
     def CONSTANT(self):
         return 1
