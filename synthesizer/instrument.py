@@ -24,12 +24,18 @@ class ReadInstrument:
             
         return armonics, modulations
 
-class Instrument:
-    def __init__(self, filename):
-        self.readinstrument= ReadInstrument(filename)
-        self.armonics= None
-        self.modulations= None
-        self.read()
-
-    def read(self):
-        self.armonics, self.modulations=self.readinstrument.read()
+class ReadPartiture:
+    def __init__(self, filename_partiture):
+        self.filename_partiture = filename_partiture
+        
+    def read_partiture(self):
+        list_of_notes = []
+        with open (self.filename_partiture, 'r') as f:
+            
+            for line in f:
+                line=line.strip().split(' ')
+                starts=float(line[0])
+                type=line[1]
+                duration=float(line[2])
+                list_of_notes.append((starts, type, duration))
+        return list_of_notes
