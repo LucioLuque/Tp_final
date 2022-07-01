@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 instanteInicial = datetime.now()
-s=Synthesizer("queen.txt", "piano.txt")
+s=Synthesizer("una.txt", "piano.txt")
 #s=Synthesizer("queen.txt", "piano.txt").compose()
 #x=np.arange(0, len(s), 1)
 #plt.plot(x, s)

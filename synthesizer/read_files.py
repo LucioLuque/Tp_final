@@ -4,7 +4,7 @@ class ReadInstrument:
     
     def read(self):
         armonics={}
-        modulations={}
+        modulations=[]
         
         with open (self.filename, 'r') as f:
             amount_armonics= int(f.readline())
@@ -18,10 +18,22 @@ class ReadInstrument:
             sustained=(module_lines[1].strip())
             decay=(module_lines[2].strip().split(" "))
 
-            modulations[attack[0]]=float(attack[1])
-            modulations[sustained]=[]
-            modulations[decay[0]]=float(decay[1])
-            
+            atpl=[]
+            for i in attack:
+                if i!=attack[0]:
+                    atpl.append(float(i))
+                else:
+                    atpl.append(attack[0])
+            modulations.append((atpl))
+            modulations.append((sustained))
+            dtpl=[]
+            for i in decay:
+                if i!=decay[0]:
+                    dtpl.append(float(i))
+                else:
+                    dtpl.append(decay[0])
+            modulations.append((dtpl))
+
         return armonics, modulations
 
 class ReadPartiture:
