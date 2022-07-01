@@ -10,7 +10,6 @@ class Synthesizer:
     def __init__(self, filename_partiture, filename_instrument):
         self.filename_partiture = filename_partiture
         self.filename_instrument = filename_instrument
-        self.create_wav()
 
     def read_partiture(self):
         return ReadPartiture(self.filename_partiture).read_partiture()
@@ -24,11 +23,13 @@ class Synthesizer:
     def compose(self):
         list_of_notes=self.read_partiture()
         armonics, modulations=self.read_instrument()
-        decay= modulations[0][1]
-        song_duration=float(list_of_notes[-1][0])+float(list_of_notes[-1][2])+decay
+        decay= modulations[2][1]
+        song_duration=float(list_of_notes[-1][0])+float(list_of_notes[-1][2])+decay+1
         song=np.empty(int(song_duration*44100))
 
         for i in list_of_notes:
+            s=0
+            e=0
             starts, type, duration=i
             frequency=self.get_frequency(type)
             duration+=decay
@@ -36,10 +37,18 @@ class Synthesizer:
             armonic_note=self.create_armonic_note(frequency, duration, armonics, note)
             modulated_note=self.create_modulation(duration, modulations, armonic_note, note)
             s=int(starts*44100)
+            
             e=len(modulated_note) + s
+            #print(s, len(modulated_note), e)
             song[s:e]+=modulated_note
+            #song[song>=s:song<=e]+= modulated_note
+            """
+            x=np.linspace(0, len(song), len(song))
+            plt.plot(x, song)
+            plt.grid(True)
 
-       
+            plt.show()
+            """
 
         return song
 
@@ -54,5 +63,8 @@ class Synthesizer:
 
     def create_wav(self):
         song=self.compose()
+        #data = 2**15 /np.max(song) * song
+
         a=self.filename_partiture.replace(".txt", ".wav")
-        return wavfile.write(a, 44100, song)
+        #return wavfile.write(a, 44100,  data.astype(np.int16))
+        return wavfile.write(a, 44100,  song)

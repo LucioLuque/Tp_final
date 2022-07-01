@@ -17,17 +17,20 @@ class ModulatedNote:
         
         modulation, first_time, second_time= self.divide_modulation()
         keys= [modulation[0][0], modulation[1], modulation[2][0]]
-        func=ModulationFunctions()
-
+        
+        #print([int(44100*second_time)-1])
         m= np.empty(int(44100*(self.duration)))
-        m[:int(44100*first_time)]=func.moduled(keys[0], array_of_note[:int(44100*first_time)], first_time)
-        m[int(44100*first_time):int(44100*second_time)]=m[int(44100*first_time)-1]*func.moduled(keys[1], array_of_note[int(44100*first_time):int(44100*second_time)], second_time)
-        m[int(44100*second_time):]=m[int(44100*second_time)-1]*func.moduled(keys[2], array_of_note[int(44100*second_time):]-second_time, self.duration-second_time)
-
+        m[:int(44100*first_time)]=dic_funcs[keys[0]](array_of_note[:int(44100*first_time)], first_time)
+        m[int(44100*first_time):int(44100*second_time)]=m[int(44100*first_time)-1]*dic_funcs[keys[1]](array_of_note[int(44100*first_time):int(44100*second_time)], second_time)
+        m[int(44100*second_time):]=m[int(44100*second_time)-1]*dic_funcs[keys[2]](array_of_note[int(44100*second_time):]-second_time, self.duration-second_time)
+        
         a=m*armonic_note
+        """
         x=array_of_note
         plt.plot(x, a)
         plt.show()
+        """
+        
         return a
 
 class ArmonicNote:
