@@ -1,74 +1,59 @@
-import math
 import numpy as np
+def CONSTANT():
+    return 1
 
-from datetime import datetime
+def LINEAR(t, t0):
+    return t/t0
 
-class ModulationFunctions:
-    def __init__(self):
-        pass
+def INVLINEAR(t, t0):
 
-    def moduled(self, name, t, t0):
-        if name=='LINEAR':
-            return self.LINEAR(t,t0)
-        elif name=='INVLINEAR':
-            return self.INVLINEAR(t,t0)
-        elif name=='CONSTANT':
-            return self.CONSTANT(t) 
+    lineal = (1 - (t/t0))
+    lineal[lineal<0]=0
+    return lineal
 
-    def CONSTANT(self, t):
-        return 1
+def SIN(t,t0):
+    f=440
+    a=0.1
+    return (1 + a*(np.sin(f*t)))
 
-    def LINEAR(self,t, t0):
-        return t/t0
+def EXP(t, t0):
+    return np.power(np.e,((5*(t - t0))/(t0)))
 
-    def INVLINEAR(self,t, t0):
-        
+def INVEXP(t,t0):
+    return np.power(np.e,((-5*t)/t0))
 
+def QUARTCOS(t, t0):
+    return np.cos(((np.pi)*t)/(2*t0))
 
-        lineal = (1 - (t/t0))
-        for idx, i in enumerate(lineal):
-            if i <0:
-                lineal[idx:]=0 
-                break
-        return lineal
+def QUARTSIN(t, t0):
+    return np.sin(((np.pi)*t)/(2*t0))
 
-    def SIN(self,a, f):
-        return (1 + a*(math.sin(f)))
+def HALFCOS(t, t0):
+    return ((1 + np.cos(((np.pi)*t)/(2*t0)))/2)
 
-    def EXP(self,t, t0):
-        return ((math.e)**((5*(t - t0))/(t0)))
+def HALFSIN(t, t0):
+    return ((1 + np.cos((np.pi)*((t/t0)-(1/2))))/2)
 
-    def INVEXP(self,t,t0):
-        return ((math.e)**((-5*t)/t0))
+def LOG(t ,t0):
+    return (np.log10(((9*t)/t0)+1))
 
-    def QUARTCOS(self,t, t0):
-        return math.cos(((math.pi)*t)/(2*t0))
+def INVLOG(t, t0):
+    invlog= (np.log10(((-9*t)/t0)+10))
+    invlog[t>=t0]=0
+    return invlog
 
-    def QUARTSIN(self,t, t0):
-        return math.sin(((math.pi)*t)/(2*t0))
+def TRI(t, t0, t1, a1):
+    tri=t
+    tri1=(t*a1)/t1
+    tri2=((t-t1)/(t1-t0))+a1
+    tri[:t1]=tri1
+    tri[t1:]=tri2
+    return tri
 
-    def HALFCOS(self,t, t0):
-        return ((1 + math.cos(((math.pi)*t)/(2*t0)))/2)
+def PULSES(t, t0, t1, a1):
+    t2= (t/t0)-np.floor(t/t0)
+    pulses=np.absolute(((1-a1)/t1)*(t2-t0-t1)) + a1
+    pulses[pulses>1]=1
+    return pulses
 
-    def HALFSIN(self,t, t0):
-        return ((1 + math.cos((math.pi)*((t/t0)-(1/2))))/2)
-
-    def LOG(self,t ,t0):
-        return (math.log10(((9*t)/t0)+1))
-
-    def INVLOG(self,t, t0):
-        if t < t0:
-            return (math.log10(((-9*t)/t0)+10))
-        else:
-            return 0
-
-    def TRI(self,t, t0, t1, a1):
-        if t < t1:
-            return ((t*a1)/t1)
-        elif t > t1:
-            return (((t-t1)/(t1-t0))+a1)
-
-    def PULSES(self,t, t0, t1, a1):
-        t2= (t/t0) -abs(t/t0)
-        return np.min(abs(((1-a1)/t1)*(t2-t0-t1))+a1)
-
+dic_funcs={'CONSTANT':CONSTANT, 'LINEAR':LINEAR, 'INVLINEAR':INVLINEAR, 'SIN':SIN, 'EXP':EXP, 'INVEXP':INVEXP, 'QUARTCOS':QUARTCOS, 'QUARTSIN':QUARTSIN, 'HALFCOS':HALFCOS, 'HALFSIN':HALFSIN, 'LOG':LOG, 'INVLOG':INVLOG, 'TRI':TRI, 'PULSES':PULSES}
