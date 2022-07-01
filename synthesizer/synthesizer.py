@@ -5,10 +5,9 @@ from note import *
 
 from read_files import *
 from scipy.io import wavfile
-
+from matplotlib import pyplot as plt
 class Synthesizer:
     def __init__(self, filename_partiture, filename_instrument):
-
         self.filename_partiture = filename_partiture
         self.filename_instrument = filename_instrument
         self.create_wav()
@@ -25,7 +24,7 @@ class Synthesizer:
     def compose(self):
         list_of_notes=self.read_partiture()
         armonics, modulations=self.read_instrument()
-        decay= list(modulations.values())[2]
+        decay= modulations[0][1]
         song_duration=float(list_of_notes[-1][0])+float(list_of_notes[-1][2])+decay
         song=np.empty(int(song_duration*44100))
 
@@ -40,6 +39,8 @@ class Synthesizer:
             e=len(modulated_note) + s
             song[s:e]+=modulated_note
 
+       
+
         return song
 
     def create_note(self, duration):
@@ -53,4 +54,5 @@ class Synthesizer:
 
     def create_wav(self):
         song=self.compose()
-        return wavfile.write("New_song.wav", 44100, song)
+        a=self.filename_partiture.replace(".txt", ".wav")
+        return wavfile.write(a, 44100, song)
