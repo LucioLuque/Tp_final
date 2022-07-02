@@ -9,7 +9,11 @@ class ModulatedNote:
 
     def divide_modulation(self):
         modulation= self.modulations
-        first_time= modulation[0][1]
+        if modulation[0][0]=="TRI":
+            first_time=[modulation[0][2], modulation[0][1], modulation[0][3]]
+        else:
+            first_time= [modulation[0][1]]
+
         second_time= self.duration-modulation[2][1]
         return modulation, first_time, second_time
     
@@ -20,8 +24,10 @@ class ModulatedNote:
         
         #print([int(44100*second_time)-1])
         m= np.empty(int(44100*(self.duration)))
-        m[:int(44100*first_time)]=dic_funcs[keys[0]](array_of_note[:int(44100*first_time)], first_time)
-        m[int(44100*first_time):int(44100*second_time)]=m[int(44100*first_time)-1]*dic_funcs[keys[1]](array_of_note[int(44100*first_time):int(44100*second_time)], second_time)
+        print(first_time)
+        print(first_time[0])
+        m[:int(44100*first_time[0])]=dic_funcs[keys[0]](array_of_note[:int(44100*first_time[0])], first_time)
+        m[int(44100*first_time[0]):int(44100*second_time)]=m[int(44100*first_time[0])-1]*dic_funcs[keys[1]](array_of_note[int(44100*first_time[0]):int(44100*second_time)], second_time)
         m[int(44100*second_time):]=m[int(44100*second_time)-1]*dic_funcs[keys[2]](array_of_note[int(44100*second_time):]-second_time, self.duration-second_time)
         
         a=m*armonic_note

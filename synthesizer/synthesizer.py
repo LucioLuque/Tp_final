@@ -28,8 +28,6 @@ class Synthesizer:
         song=np.empty(int(song_duration*44100))
 
         for i in list_of_notes:
-            s=0
-            e=0
             starts, type, duration=i
             frequency=self.get_frequency(type)
             duration+=decay
@@ -39,16 +37,14 @@ class Synthesizer:
             s=int(starts*44100)
             
             e=len(modulated_note) + s
-            #print(s, len(modulated_note), e)
             song[s:e]+=modulated_note
-            #song[song>=s:song<=e]+= modulated_note
             """
             x=np.linspace(0, len(song), len(song))
             plt.plot(x, song)
             plt.grid(True)
 
-            plt.show()
-            """
+            plt.show()"""
+            
 
         return song
 
