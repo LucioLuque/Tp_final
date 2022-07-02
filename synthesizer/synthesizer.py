@@ -36,7 +36,6 @@ class Synthesizer:
         for i in list_of_notes:
             starts, name, duration=i
             frequency=self.get_frequency(name)
-
             duration+=decay
             note=self.create_note(duration)
             armonic_note=self.create_armonic_note(frequency, duration, armonics, note)
