@@ -1,3 +1,4 @@
+from typing import Type
 import numpy as np
 from modulation import *
 from notes import *
@@ -17,8 +18,13 @@ class Synthesizer:
     def read_instrument(self):
         return ReadInstrument(self.filename_instrument).read()
 
-    def get_frequency(self, type):
-        return notes_mapping[type]
+    def get_frequency(self, name):
+        if type(name) != str:
+            raise TypeError(f"{name} must be str")
+        if name not in notes_mapping:
+            raise KeyError(f"{name} is not a valid note")
+        else:
+            return notes_mapping[name]
     
     def compose(self):
         list_of_notes=self.read_partiture()
@@ -28,8 +34,9 @@ class Synthesizer:
         song=np.empty(int(song_duration*44100))
 
         for i in list_of_notes:
-            starts, type, duration=i
-            frequency=self.get_frequency(type)
+            starts, name, duration=i
+            frequency=self.get_frequency(name)
+
             duration+=decay
             note=self.create_note(duration)
             armonic_note=self.create_armonic_note(frequency, duration, armonics, note)
