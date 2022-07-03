@@ -20,20 +20,20 @@ class ModulatedNote:
     def modulation(self, armonic_note, array_of_note):
         
         modulation, first_time, second_time= self.divide_modulation()
-        keys= [modulation[0][0], modulation[1], modulation[2][0]]
+        keys= [modulation[0][0], modulation[1][0], modulation[2][0]]
+        
         m= np.empty(int(44100*(self.duration)))
+
         m[:int(44100*first_time[0])]=dic_funcs[keys[0]](array_of_note[:int(44100*first_time[0])], first_time)
         m[int(44100*first_time[0]):int(44100*second_time)]=m[int(44100*first_time[0])-1]*dic_funcs[keys[1]](array_of_note[int(44100*first_time[0]):int(44100*second_time)], second_time)
         m[int(44100*second_time):]=m[int(44100*second_time)-1]*dic_funcs[keys[2]](array_of_note[int(44100*second_time):]-second_time, self.duration-second_time)
         
         a=m*armonic_note
-        
-        
-        
+        """
         x=array_of_note
-        plt.plot(x, m)
+        plt.plot(x, a)
         plt.show()
-        
+        """
         
         return a
 

@@ -1,4 +1,5 @@
 import numpy as np
+
 def CONSTANT(t, tx):
     return 1
 
@@ -40,6 +41,7 @@ def INVLOG(t, tx):
     invlog= (np.log10(((-9*t)/tx)+10))
     invlog[t>=tx]=0
     return invlog
+
 
 def TRI(t, tx):
     t0=tx[0]
