@@ -1,5 +1,5 @@
 import numpy as np
-def CONSTANT():
+def CONSTANT(t,t0):
     return 1
 
 def LINEAR(t, t0):
@@ -42,7 +42,8 @@ def INVLOG(t, t0):
     invlog[t>=t0]=0
     return invlog
 
-def TRI(t, t0, t1, a1):
+def TRI(t, t0):
+    t2, t1, a1 =t0
     tri=t
     tri1=(t*a1)/t1
     tri2=((t-t1)/(t1-t0))+a1
