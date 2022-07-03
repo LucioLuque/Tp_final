@@ -6,9 +6,8 @@ def LINEAR(t, tx):
     return t/tx
 
 def INVLINEAR(t, tx):
-    print(tx[0])
     lineal = (1 - (t/tx))
-    lineal[lineal<0]=0
+    lineal[lineal<=0]=0
     return lineal
 
 def SIN(t,tx):
@@ -47,8 +46,8 @@ def TRI(t, tx):
     t1=tx[1]
     a1=tx[2]
     tri=t
-    tri[:int(t1*44100)]=(t[:int(t1*44100)]*a1)/t1
-    tri[int(t1*44100):]=((t[int(t1*44100):]-t1)/(t1-t0))+a1
+    tri[tri<int(t1*44100)]=(t[:int(t1*44100)]*a1)/t1
+    tri[tri>int(t1*44100)]=((t[int(t1*44100):]-t1)/(t1-t0))+a1
     return tri
 
 def PULSES(t, tx):
