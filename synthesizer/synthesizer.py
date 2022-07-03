@@ -7,6 +7,10 @@ from note import *
 from read_files import *
 from scipy.io import wavfile
 from matplotlib import pyplot as plt
+import scipy
+import sys
+import math
+import contextlib
 class Synthesizer:
     def __init__(self, filename_partiture, filename_instrument):
         self.filename_partiture = filename_partiture
@@ -44,14 +48,14 @@ class Synthesizer:
             
             e=len(modulated_note) + s
             song[s:e]+=modulated_note
-            """
+            '''
             x=np.linspace(0, len(song), len(song))
             plt.plot(x, song)
             plt.grid(True)
 
-            plt.show()"""
-            
-
+            plt.show()
+            '''
+           
         return song
 
     def create_note(self, duration):

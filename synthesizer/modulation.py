@@ -31,7 +31,7 @@ def HALFCOS(t, tx):
     return ((1 + np.cos(((np.pi)*t)/(2*tx)))/2)
 
 def HALFSIN(t, tx):
-    return ((1 + np.cos((np.pi)*((t/tx)-(1/2))))/2)
+    return (1 + np.sin((np.pi)*((t/tx)-(1/2))))/2
 
 def LOG(t ,tx):
     return (np.log10(((9*t)/tx)+1))
@@ -46,8 +46,8 @@ def TRI(t, tx):
     t1=tx[1]
     a1=tx[2]
     tri=t
-    tri[tri<int(t1*44100)]=(t[:int(t1*44100)]*a1)/t1
-    tri[tri>int(t1*44100)]=((t[int(t1*44100):]-t1)/(t1-t0))+a1
+    tri[:int(t1*44100)]=(t[:int(t1*44100)]*a1)/t1
+    tri[int(t1*44100):]=((t[int(t1*44100):]-t1)/(t0-t1))+a1
     return tri
 
 def PULSES(t, tx):

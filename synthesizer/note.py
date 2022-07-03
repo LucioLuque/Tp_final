@@ -10,7 +10,7 @@ class ModulatedNote:
     def divide_modulation(self):
         modulation= self.modulations
         if modulation[0][0]=="TRI":
-            first_time=[modulation[0][2], modulation[0][1], modulation[0][3]]
+            first_time=[modulation[0][1], modulation[0][2], modulation[0][3]]
         else:
             first_time= [modulation[0][1]]
 
@@ -31,7 +31,7 @@ class ModulatedNote:
         
         
         x=array_of_note
-        plt.plot(x, a)
+        plt.plot(x, m)
         plt.show()
         
         
