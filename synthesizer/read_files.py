@@ -15,24 +15,30 @@ class ReadInstrument:
             module_lines=(f.readlines())
     
             attack=module_lines[0].strip().split(" ")
-            sustained=(module_lines[1].strip())
+            sustained=(module_lines[1].strip().split(" "))
             decay=(module_lines[2].strip().split(" "))
 
-            atpl=[]
+            attack_list=[]
             for i in attack:
                 if i!=attack[0]:
-                    atpl.append(float(i))
+                    attack_list.append(float(i))
                 else:
-                    atpl.append(attack[0])
-            modulations.append((atpl))
-            modulations.append((sustained))
-            dtpl=[]
+                    attack_list.append(attack[0])
+            modulations.append((attack_list))
+            sustained_list=[]
+            for i in sustained:
+                if i!=sustained[0]:
+                    sustained_list.append(float(i))
+                else:
+                    sustained_list.append(sustained[0])
+            modulations.append((sustained_list))
+            decay_list=[]
             for i in decay:
                 if i!=decay[0]:
-                    dtpl.append(float(i))
+                    decay_list.append(float(i))
                 else:
-                    dtpl.append(decay[0])
-            modulations.append((dtpl))
+                    decay_list.append(decay[0])
+            modulations.append((decay_list))
 
         return armonics, modulations
 
