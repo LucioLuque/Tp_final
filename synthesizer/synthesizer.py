@@ -1,15 +1,9 @@
 import numpy as np
-from modulation import *
 from notes import *
 from note import *
 
 from read_files import *
 from scipy.io import wavfile
-from matplotlib import pyplot as plt
-import scipy
-import sys
-import math
-import contextlib
 class Synthesizer:
     def __init__(self, filename_partiture, filename_instrument):
         self.filename_partiture = filename_partiture
@@ -43,18 +37,11 @@ class Synthesizer:
             note=self.create_note(duration)
             armonic_note=self.create_armonic_note(frequency, duration, armonics, note)
             modulated_note=self.create_modulation(duration, modulations, armonic_note, note)
-            s=int(starts*44100)
             
+            s=int(starts*44100)
             e=len(modulated_note) + s
             song[s:e]+=modulated_note
-            '''
-            x=np.linspace(0, len(song), len(song))
-            plt.plot(x, song)
-            plt.grid(True)
-
-            plt.show()
-            '''
-           
+  
         return song
 
     def create_note(self, duration):
@@ -66,10 +53,7 @@ class Synthesizer:
     def create_modulation(self, duration, modulations, armonic_note, note):
         return ModulatedNote(duration, modulations).modulation(armonic_note, note)
 
-    def create_wav(self):
+    def create_wav(self): 
         song=self.compose()
-        #data = 2**15 /np.max(song) * song
-
         a=self.filename_partiture.replace(".txt", ".wav")
-        #return wavfile.write(a, 44100,  data.astype(np.int16))
         return wavfile.write(a, 44100,  song)
