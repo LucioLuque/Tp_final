@@ -1,13 +1,10 @@
 import numpy as np
-from modulation import *
-from notes import *
-from note import *
-
+from notes_mapping import notes_mapping
+from note_clases import *
 from read_files import *
 from scipy.io import wavfile
-
 class Synthesizer:
-    def __init__(self, filename_partiture:str, filename_instrument:str):
+    def __init__(self, song_frequency, filename_partiture:str, filename_instrument:str):
         """
         Parameters
         ----------
@@ -16,6 +13,7 @@ class Synthesizer:
         filename_instrument : str
             The name of the file containing the instrument
         """
+        self.song_frequency=song_frequency
         self.filename_partiture = filename_partiture
         self.filename_instrument = filename_instrument
 
@@ -37,7 +35,7 @@ class Synthesizer:
     def get_frequency(self, name: str):
         """
         Get the frequency of a note using the name of the note as a key of the notes_mapping dictionary.
-        See notes.py for the notes_mapping dictionary.
+        See notes_mapping.py for the notes_mapping dictionary.
         
         Parameters
         ----------
@@ -71,14 +69,39 @@ class Synthesizer:
         float
             The maximum duration of the notes"""
         
-        max_duration=max(list_of_notes, key=lambda x: x[0]+x[2])[0]+max(list_of_notes, key=lambda x: x[0]+x[2])[2]
-        return max_duration
+        max_duration=max(list_of_notes, key=lambda x: x[0]+x[2])
+        return max_duration[0]+max_duration[2]
+
+
+    def attack_is_minor_than_duration(self, list_of_notes, attack, decay):
+        """
+        Checks if the attack is minor than the duration of each note plus the decay.
+        If the attack is minor than the duration, raise a ValueError.
+
+        Parameters
+        ----------
+        list_of_notes : list
+            The list of notes
+        attack : float
+            The attack of the instrument
+        decay : float
+            The decay of the instrument
+        
+        Raises
+        ------
+        ValueError
+            If the attack is minor than the duration of each note plus the decay
+        """
+        for i in list_of_notes:
+            if (i[2]+decay)<attack:
+                raise ValueError(f"The attack={attack} is greater than the duration of the note:{i[2]}+ decay:{decay}")
+        return True
+        
     
     def compose(self):
         """
         The main function to compose the song.
         Returns the song as a numpy array.
-
         Returns
         -------
         numpy.ndarray
@@ -87,9 +110,10 @@ class Synthesizer:
         list_of_notes=self.read_partiture()
         armonics, modulations=self.read_instrument()
         decay= modulations[2][1]
+        self.attack_is_minor_than_duration(list_of_notes, modulations[0][1], decay)
         max_duration=self.get_max_duration(list_of_notes)
         song_duration=max_duration+decay+1
-        song=np.empty(int(song_duration*44100))
+        song=np.empty(int(song_duration*self.song_frequency))
 
         for i in list_of_notes:
             starts, name, duration=i
@@ -97,9 +121,9 @@ class Synthesizer:
             duration+=decay #add decay to the duration
             note=self.create_note(duration)
             armonic_note=self.create_armonic_note(frequency, duration, armonics, note)
-            modulated_note=self.create_modulation(duration, modulations, armonic_note, note)
+            modulated_note=self.create_modulation( duration, modulations, armonic_note, note)
             
-            start=int(starts*44100)
+            start=int(starts*self.song_frequency)
             end=len(modulated_note) + start
             song[start:end]+=modulated_note #add the modulated note to the song
 
@@ -121,7 +145,7 @@ class Synthesizer:
         numpy.ndarray
             The note as a numpy array
         """
-        return CreateArrayNote(duration).array_of_note()
+        return CreateArrayNote(self.song_frequency,duration).array_of_note()
 
     def create_armonic_note(self, frequency, duration, armonics, note): 
         """
@@ -165,7 +189,7 @@ class Synthesizer:
         numpy.ndarray
             The modulated note as a numpy array
         """
-        return ModulatedNote(duration, modulations).modulation(armonic_note, note)
+        return ModulatedNote(self.song_frequency, duration, modulations).modulation(armonic_note, note)
 
     def create_wav(self):
         """
@@ -174,4 +198,4 @@ class Synthesizer:
 
         song=self.compose()
         song_name=self.filename_partiture.replace(".txt", ".wav")
-        return wavfile.write(song_name, 44100,  song)
+        return wavfile.write(song_name, self.song_frequency,  song)
