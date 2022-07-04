@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 
 
 instanteInicial = datetime.now()
-s=Synthesizer("queen.txt", "piano.txt").create_wav()
+s=Synthesizer("BlackBird.txt", "piano.txt").create_wav()
 instanteFinal = datetime.now()
 print(instanteFinal - instanteInicial)
 

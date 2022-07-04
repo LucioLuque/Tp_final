@@ -1,5 +1,10 @@
-from syn.synthesizer import Synthesizer
+import ...synthesizer.synthesizer as Synthesizer
 
-if __name__=="__main__":
+def main():
     s=Synthesizer("queen.txt", "piano.txt")
     s.create_wav()
+
+
+if __name__=="__main__":
+    main()
+    
