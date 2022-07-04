@@ -1,5 +1,4 @@
 import numpy as np
-from modulation import *
 from notes import *
 from note import *
 
@@ -166,6 +165,7 @@ class Synthesizer:
             The modulated note as a numpy array
         """
         return ModulatedNote(duration, modulations).modulation(armonic_note, note)
+
 
     def create_wav(self):
         """

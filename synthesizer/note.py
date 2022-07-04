@@ -1,7 +1,5 @@
-
 import numpy as np
 from modulation import *
-from matplotlib import pyplot as plt
 class ModulatedNote:
     def __init__(self, duration, modulations):
         """
@@ -25,8 +23,9 @@ class ModulatedNote:
             first_time=[modulation[0][1], modulation[0][2], modulation[0][3]]
         else:
             first_time= [modulation[0][1]]
-
-        second_time= self.duration-modulation[2][1]
+        
+        second_time= [self.duration-modulation[2][1]]
+        
         return modulation, first_time, second_time
     
     def modulation(self, armonic_note, array_of_note):
@@ -52,16 +51,14 @@ class ModulatedNote:
         m= np.empty(int(44100*(self.duration)))
 
         m[:int(44100*first_time[0])]=dic_funcs[keys[0]](array_of_note[:int(44100*first_time[0])], first_time)
-        m[int(44100*first_time[0]):int(44100*second_time)]=m[int(44100*first_time[0])-1]*dic_funcs[keys[1]](array_of_note[int(44100*first_time[0]):int(44100*second_time)], second_time)
-        m[int(44100*second_time):]=m[int(44100*second_time)-1]*dic_funcs[keys[2]](array_of_note[int(44100*second_time):]-second_time, self.duration-second_time)
+        if modulation[1][0]=="PULSES":
+            m[int(44100*first_time[0]):int(44100*second_time[0])]=dic_funcs[keys[1]](array_of_note[int(44100*first_time[0]):int(44100*second_time[0])]-first_time[0],[modulation[1][1],modulation[1][2],modulation[1][3]])
+        else:
+            m[int(44100*first_time[0]):int(44100*second_time[0])]=dic_funcs[keys[1]](array_of_note[int(44100*first_time[0]):int(44100*second_time[0])]-first_time[0],second_time)
+        m[int(44100*second_time[0]):]=m[int(44100*second_time[0])-1]*dic_funcs[keys[2]](array_of_note[int(44100*second_time[0]):]-second_time[0], [self.duration-second_time[0]])
         
         modulated_note=0.06*m*armonic_note
-        """
-        x=array_of_note
-        plt.plot(x, a)
-        plt.show()
-        """
-        
+      
         return modulated_note
 
 class ArmonicNote:
