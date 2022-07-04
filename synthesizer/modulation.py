@@ -195,6 +195,19 @@ def INVLOG(t, tx):
 
 
 def TRI(t, tx):
+    """
+    Returns a tri array of the note.
+            
+    Parameters
+    ----------
+    t : ndarray
+        The time array
+    tx : float
+        The times of the note. if used for attack its the time the attack ends, etc.
+    
+    returns: ndarray
+        The tri array of the note.
+    """
     t0=tx[0]
     t1=tx[1]
     a1=tx[2]
@@ -204,6 +217,19 @@ def TRI(t, tx):
     return tri
 
 def PULSES(t, tx):
+    """
+    Returns a pulses array of the note.
+                
+    Parameters
+    ----------
+    t : ndarray
+        The time array
+    tx : float
+        The times of the note. if used for attack its the time the attack ends, etc.
+    
+    returns: ndarray
+        The pulses array of the note.
+    """
     t0=tx[0]
     t1=tx[1]
     a1=tx[2]
