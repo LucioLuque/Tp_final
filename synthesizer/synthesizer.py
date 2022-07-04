@@ -1,6 +1,6 @@
 import numpy as np
-from notes_mapping import notes_mapping
-from note_clases import *
+from notes import notes_mapping
+from note import *
 from read_files import *
 from scipy.io import wavfile
 class Synthesizer:
