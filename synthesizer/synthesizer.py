@@ -191,6 +191,7 @@ class Synthesizer:
         """
         return ModulatedNote(self.song_frequency, duration, modulations).modulation(armonic_note, note)
 
+
     def create_wav(self):
         """
         Creates a wav file of the song. Uses the filename_partiture as the name of the file.
