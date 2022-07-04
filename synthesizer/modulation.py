@@ -219,16 +219,6 @@ def TRI(t, tx):
 def PULSES(t, tx):
     """
     Returns a pulses array of the note.
-                
-    Parameters
-    ----------
-    t : ndarray
-        The time array
-    tx : float
-        The times of the note. if used for attack its the time the attack ends, etc.
-    
-    returns: ndarray
-        The pulses array of the note.
     """
     t0=tx[0]
     t1=tx[1]
