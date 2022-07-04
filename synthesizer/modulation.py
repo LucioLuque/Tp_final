@@ -208,21 +208,28 @@ def TRI(t, tx):
     returns: ndarray
         The tri array of the note.
     """
-    t0=tx[0]
-    t1=tx[1]
-    a1=tx[2]
+    t0,t1,a1=tx
     tri=t
-    tri[:int(t1*44100)]=(t[:int(t1*44100)]*a1)/t1
-    tri[int(t1*44100):]=((t[int(t1*44100):]-t1)/(t1-t0))+a1
+    tri[:int(t1*44100)]=(tri[:int(t1*44100)]*a1)/t1
+    tri[int(t1*44100):]=((tri[int(t1*44100):]-t1)/(t0-t1))+a1
+    tri[tri>1]=1
     return tri
 
 def PULSES(t, tx):
-    """
+     """
     Returns a pulses array of the note.
-    """
-    t0=tx[0]
-    t1=tx[1]
-    a1=tx[2]
+                
+        Parameters
+        ----------
+        t : ndarray
+            The time array
+        tx : float
+            The times of the note. if used for attack its the time the attack ends, etc.
+        
+        returns: ndarray
+            The pulses array of the note.
+        """
+    t0,t1,a1=tx
     t2=(t/t0)-np.floor(t/t0)
     pulses=np.absolute(((1-a1)/t1)*(t2-t0-t1)) + a1
     pulses[pulses>1]=1
