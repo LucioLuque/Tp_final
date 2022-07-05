@@ -68,7 +68,7 @@ def SIN(t,tx):
     """
 
     if type(t) != np.ndarray or type(tx) != list:
-
+        raise TypeError
     f=440
     a=0.1
     return (1+ a*(np.sin(f*t)))

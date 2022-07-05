@@ -92,7 +92,7 @@ class Test_Case(unittest.TestCase):
     def test_read_instrument(self):
         f="piano.txt"
         e={1:1,2:0.72727272,3:0.31818181,4:0.090909}
-        l=[["LINEAR",0.02],["SIN"],["INVEXP",0.06]]
+        l=[["EXP",0.02],["INVLOG"],["INVEXP",0.06]]
         self.assertEqual(ReadInstrument(f).read(),(e,l))
     
 if __name__== '__main__':
