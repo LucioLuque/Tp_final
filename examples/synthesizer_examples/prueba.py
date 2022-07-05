@@ -1,4 +1,4 @@
-from synthesizer import Synthesizer
+from synthesizer import *
 from datetime import datetime
 
 

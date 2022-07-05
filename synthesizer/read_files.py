@@ -11,13 +11,14 @@ class ReadInstrument:
         """
         if type(filename) != str:
             raise TypeError
+
         self.filename=filename
     
     def read(self):
         """
-        Reads the instrument file and returns two dictionaries.
-        The first dictionary contains the armonics of the instrument.
-        The second dictionary contains the modulations of the instrument.
+        Reads the instrument file and returns a dictionary and a list.
+        The dictionary contains the armonics of the instrument.
+        The list contains the modulations of the instrument.
         """
         armonics={}
         modulations=[]
@@ -38,6 +39,7 @@ class ReadInstrument:
             module_lines=(f.readlines())#read the modulations
             if len(module_lines) < 3:
                 raise ValueError
+
             for line in module_lines:
                 l=[]
                 line=line.strip().split(" ")
@@ -61,36 +63,57 @@ class ReadPartiture:
         filename_partiture : str
             The name of the file containing the partiture
         """
+
         if type(filename_partiture) != str:
             raise TypeError
         self.filename_partiture = filename_partiture
-    def attack_is_minor_than_duration(self, note, attack):
+   
+
+    def attack_is_minor_than_duration(self, duration, attack):
         """
-        Checks if the attack is minor than the duration of each note plus the decay.
-        If the attack is minor than the duration, raise a ValueError.
+        Checks if the duration of each note is greater than the attack.
+        Prints a warning if the duration is smaller than the attack.It wont be added to the list of notes.
+        Returns True if the duration is greater than the attack.
+ 
 
         Parameters
         ----------
-        list_of_notes : list
-            The list of notes
+        duration : float
+            The duration of the note
+        attack : float
+            The attack of the instrument
+     
+        Returns
+        -------
+        bool
+            True if the duration is greater than the attack. False otherwise.
+
+        """
+        if (duration)<=attack:
+            return False
+        else:
+            return True
+        
+    def read_partiture(self, attack, decay):
+        """
+        Reads the partiture file.
+        It will check if the duration is greater than the attack. See attack_is_minor_than_duration.
+        Will add the note to the list if the duration is greater than the attack.
+        Will add the decay to the duration of the note.
+        Each note is a tuple of the form (start:float, name:str, duration:float).
+        
+        Parameters
+        ----------
         attack : float
             The attack of the instrument
         decay : float
             The decay of the instrument
         
-        Raises
-        ------
-        ValueError
-            If the attack is minor than the duration of each note plus the decay
-        """
-        
-        if (note[2])<attack:
-            return False
-        return True
-    def read_partiture(self, attack, decay):
-        """
-        Reds the partiture file and returns a list of notes.
-        Each note is a tuple of the form (start:float, name:str, duration:float).
+        Returns
+        -------
+        list
+            The list of notes
+
         """
         list_of_notes = []
         failed_notes=0
@@ -100,13 +123,12 @@ class ReadPartiture:
                 starts=float(line[0])
                 type=line[1]
                 duration=float(line[2])
-                if self.attack_is_minor_than_duration((starts,type,duration), attack):
-                    list_of_notes.append((starts, type, duration+decay))
+                if self.attack_is_minor_than_duration(duration,attack): 
+                    list_of_notes.append((starts, type, duration+decay)) # add decay to the duration
                 else:
                     failed_notes+=1
-            if failed_notes!=0:
-                print(f"Warning: There are {failed_notes} notes that are lower than the attack: {attack}, they are not going to reproduce.")
-        if len(list_of_notes)==0:
-            raise ValueError(f"All the notes are lower than the attack: {attack}")
-       
+            if failed_notes>0:
+                print(f"Warning: There are {failed_notes} notes that are lower than the attack:{attack}, and there are not going to reproduce")
+            if len(list_of_notes)==0:
+                 raise ValueError(f"All the notes are lower than the attack: {attack}")
         return list_of_notes

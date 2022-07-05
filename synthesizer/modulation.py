@@ -6,6 +6,7 @@ def CONSTANT(t, tx):
     """
     if type(t) != np.ndarray or type(tx) != list:
         raise TypeError
+
     return 1
 
 def LINEAR(t, tx):
@@ -23,8 +24,10 @@ def LINEAR(t, tx):
         The linear array of the note.
     
     """
+
     if type(t) != np.ndarray or type(tx) != list:
         raise TypeError
+
     return t/tx[0]
 
 def INVLINEAR(t, tx):
@@ -41,8 +44,10 @@ def INVLINEAR(t, tx):
     returns: ndarray
         The invlinear array of the note.
     """
+
     if type(t) != np.ndarray or type(tx) != list:
         raise TypeError
+
     lineal = (1 - (t/tx[0]))
     lineal[lineal<=0]=0
     return lineal
@@ -61,8 +66,9 @@ def SIN(t,tx):
     returns: ndarray
         The sinusoidal array of the note.
     """
+
     if type(t) != np.ndarray or type(tx) != list:
-        raise TypeError
+
     f=440
     a=0.1
     return (1+ a*(np.sin(f*t)))
@@ -88,7 +94,6 @@ def EXP(t, tx):
 def INVEXP(t,tx):
     """
     Returns a inverse exponential array of the note.
-
     Parameters
     ----------
     t : ndarray
@@ -175,6 +180,7 @@ def HALFSIN(t, tx):
         raise TypeError
     return (1 + np.sin((np.pi)*((t/tx[0])-(1/2))))/2
 
+
 def LOG(t ,tx):
     """
     Returns a logarithmic array of the note.
@@ -189,6 +195,7 @@ def LOG(t ,tx):
     returns: ndarray
         The logarithmic array of the note.
     """
+
     if type(t) != np.ndarray or type(tx) != list:
         raise TypeError
     return (np.log10(((9*t)/tx[0])+1))
@@ -207,6 +214,7 @@ def INVLOG(t, tx):
     returns: ndarray
         The inverse logarithmic array of the note.
     """
+
     if type(t) != np.ndarray or type(tx) != list:
         raise TypeError
     invlog=np.zeros(len(t))
@@ -229,12 +237,14 @@ def TRI(t, tx):
     returns: ndarray
         The tri array of the note.
     """
+
     if type(t) != np.ndarray or type(tx) != list:
         raise TypeError
     t0,t1,a1=tx
     tri=t
     tri[:int(t1*44100)]=((tri[:int(t1*44100)])*a1)/t1
     tri[int(t1*44100):]=(((tri[int(t1*44100):])-t1)/(t0-t1))+a1
+
     tri[tri>1]=1
     return tri
 
@@ -257,6 +267,7 @@ def PULSES(t, tx):
     t0,t1,a1=tx
     t2=(t/t0)-np.floor(t/t0)
     pulses=np.clip(abs( ( (1-a1) / t1 ) * (t2-t0+t1) ) + a1,None,1)
+
     return pulses
 
 dic_funcs={'CONSTANT':CONSTANT, 'LINEAR':LINEAR, 'INVLINEAR':INVLINEAR, 'SIN':SIN, 'EXP':EXP, 'INVEXP':INVEXP, 'QUARTCOS':QUARTCOS, 'QUARTSIN':QUARTSIN, 'HALFCOS':HALFCOS, 'HALFSIN':HALFSIN, 'LOG':LOG, 'INVLOG':INVLOG, 'TRI':TRI, 'PULSES':PULSES}
