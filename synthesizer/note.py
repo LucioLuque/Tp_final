@@ -11,7 +11,7 @@ class ModulatedNote:
         modulations : dict
             The modulations of the instrument. See the read_files.py module.
         """
-
+        
         if ((type(song_frequency) != int) or (type(duration) != float) or (type(modulations) != list)):
             print(song_frequency, duration, modulations)
             raise TypeError
@@ -52,6 +52,8 @@ class ModulatedNote:
         numpy.ndarray
             The modulated note as a numpy array
         """
+        if (type(armonic_note) != np.ndarray or type(array_of_note) != np.ndarray):
+            raise TypeError
         modulation, first_time, second_time= self.divide_modulation()
         keys= [modulation[0][0], modulation[1][0], modulation[2][0]]
         
