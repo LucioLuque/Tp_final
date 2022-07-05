@@ -1,5 +1,6 @@
 import numpy as np
 from modulation import *
+import matplotlib.pyplot as plt
 class ModulatedNote:
     def __init__(self, song_frequency, duration, modulations):
         """
@@ -48,15 +49,20 @@ class ModulatedNote:
         modulation, first_time, second_time= self.divide_modulation()
         keys= [modulation[0][0], modulation[1][0], modulation[2][0]]
         
-        m=np.empty(int(self.song_frequency*(self.duration)))
-        
-        m[:int(self.song_frequency*first_time[0])]=dic_funcs[keys[0]](array_of_note[:int(self.song_frequency*first_time[0])], first_time)
+
+        m= np.empty(int(self.song_frequency*(self.duration)))
+        slice1=int(self.song_frequency*first_time[0])
+        slice2=int(self.song_frequency*second_time[0])
+ 
+        m[:slice1]=dic_funcs[keys[0]](array_of_note[:slice1], first_time)
+
         if modulation[1][0]=="PULSES":
-            m[int(self.song_frequency*first_time[0]):int(self.song_frequency*second_time[0])]=dic_funcs[keys[1]](array_of_note[int(self.song_frequency*first_time[0]):int(self.song_frequency*second_time[0])]-first_time[0],[modulation[1][1],modulation[1][2],modulation[1][3]])
+            arg=[modulation[1][1],modulation[1][2],modulation[1][3]]
+            m[slice1:slice2]=dic_funcs[keys[1]](array_of_note[slice1:slice2]-first_time[0],arg)
         else:
-            m[int(self.song_frequency*first_time[0]):int(self.song_frequency*second_time[0])]=dic_funcs[keys[1]](array_of_note[int(self.song_frequency*first_time[0]):int(self.song_frequency*second_time[0])]-first_time[0],second_time)
-        m[int(self.song_frequency*second_time[0]):]=m[int(self.song_frequency*second_time[0])-1]*dic_funcs[keys[2]](array_of_note[int(self.song_frequency*second_time[0]):]-second_time[0], [self.duration-second_time[0]])
-        
+            m[slice1:slice2]=dic_funcs[keys[1]](array_of_note[slice1:slice2]-first_time[0],second_time)
+        m[slice2:]=m[slice2-1]*dic_funcs[keys[2]](array_of_note[slice2:]-second_time[0], [self.duration-second_time[0]])
+
         modulated_note=0.02*m*armonic_note
 
         return modulated_note

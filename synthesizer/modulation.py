@@ -38,7 +38,7 @@ def INVLINEAR(t, tx):
         The invlinear array of the note.
     """
     lineal = (1 - (t/tx[0]))
-    lineal[lineal<0]=0
+    lineal[lineal<=0]=0
     return lineal
 
 def SIN(t,tx):
@@ -140,7 +140,7 @@ def HALFCOS(t, tx):
         The cosinusoidal array of the note.
     """
     
-    return ((1 + np.cos(((np.pi)*t)/(2*tx[0])))/2)
+    return ((1 + np.cos(((np.pi)*t)/(tx[0])))/2)
 
 def HALFSIN(t, tx):
     """
@@ -216,19 +216,19 @@ def TRI(t, tx):
     return tri
 
 def PULSES(t, tx):
-
     """
     Returns a pulses array of the note.
                 
-    Parameters
-    ----------
-    t : ndarray
-        The time array
-    tx : float
-        The times of the note. if used for attack its the time the attack ends, etc.
-    
-    returns: ndarray
-        The pulses array of the note.
+        Parameters
+        ----------
+        t : ndarray
+            The time array
+        tx : float
+            The times of the note. if used for attack its the time the attack ends, etc.
+        
+        returns: ndarray
+            The pulses array of the note.
+
     """
     t0,t1,a1=tx
     t2=(t/t0)-np.floor(t/t0)
