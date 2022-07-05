@@ -1,59 +1,262 @@
 import numpy as np
-def CONSTANT():
+
+def CONSTANT(t, tx):
+    """
+    Returns a constant array of the note.
+    """
+    if type(t) != np.ndarray or type(tx) != list:
+        raise TypeError
     return 1
 
-def LINEAR(t, t0):
-    return t/t0
+def LINEAR(t, tx):
+    """
+    Returns a linear array of the note.
 
-def INVLINEAR(t, t0):
+    Parameters
+    ----------
+    t : ndarray
+        The time array
+    tx : float
+        The times of the note. if used for attack its the time the attack ends, etc.
+    
+    returns: ndarray
+        The linear array of the note.
+    
+    """
+    if type(t) != np.ndarray or type(tx) != list:
+        raise TypeError
+    return t/tx[0]
 
-    lineal = (1 - (t/t0))
-    lineal[lineal<0]=0
+def INVLINEAR(t, tx):
+    """
+    Returns a linear array of the note.
+
+    Parameters
+    ----------
+    t : ndarray
+        The time array
+    tx : float
+        The times of the note. if used for attack its the time the attack ends, etc.
+    
+    returns: ndarray
+        The invlinear array of the note.
+    """
+    if type(t) != np.ndarray or type(tx) != list:
+        raise TypeError
+    lineal = (1 - (t/tx[0]))
+    lineal[lineal<=0]=0
     return lineal
 
-def SIN(t,t0):
+def SIN(t,tx):
+    """
+    Returns a sinusoidal array of the note. f = frequency, a=amplitude.
+    
+    Parameters
+    ----------
+    t : ndarray
+        The time array
+    tx : float
+        The times of the note. if used for attack its the time the attack ends, etc.
+    
+    returns: ndarray
+        The sinusoidal array of the note.
+    """
+    if type(t) != np.ndarray or type(tx) != list:
+        raise TypeError
     f=440
     a=0.1
-    return (1 + a*(np.sin(f*t)))
+    return (1+ a*(np.sin(f*t)))
 
-def EXP(t, t0):
-    return np.power(np.e,((5*(t - t0))/(t0)))
+def EXP(t, tx):
+    """
+    Returns a exponential array of the note.
+    
+    Parameters
+    ----------
+    t : ndarray
+        The time array
+    tx : float
+        The times of the note. if used for attack its the time the attack ends, etc.
+    
+    returns: ndarray
+        The exponential array of the note.
+    """
+    if type(t) != np.ndarray or type(tx) != list:
+        raise TypeError
+    return np.power(np.e,((5*(t - tx[0]))/(tx[0])))
 
-def INVEXP(t,t0):
-    return np.power(np.e,((-5*t)/t0))
+def INVEXP(t,tx):
+    """
+    Returns a inverse exponential array of the note.
 
-def QUARTCOS(t, t0):
-    return np.cos(((np.pi)*t)/(2*t0))
+    Parameters
+    ----------
+    t : ndarray
+        The time array
+    tx : float
+        The times of the note. if used for attack its the time the attack ends, etc.
+    
+    returns: ndarray
+        The inverse exponential array of the note.
+    """
+    if type(t) != np.ndarray or type(tx) != list:
+        raise TypeError
+    return np.power(np.e,((-5*t)/tx[0]))
 
-def QUARTSIN(t, t0):
-    return np.sin(((np.pi)*t)/(2*t0))
+def QUARTCOS(t, tx):
+    """
+    Returns a cosinusoidal array of the note. f = frequency, a=amplitude.
 
-def HALFCOS(t, t0):
-    return ((1 + np.cos(((np.pi)*t)/(2*t0)))/2)
+    Parameters
+    ----------
+    t : ndarray
+        The time array
+    tx : float
+        The times of the note. if used for attack its the time the attack ends, etc.
+    
+    returns: ndarray
+        The cosinusoidal array of the note.
+    """
+    if type(t) != np.ndarray or type(tx) != list:
+        raise TypeError
+    return np.cos(((np.pi)*t)/(2*tx[0]))
 
-def HALFSIN(t, t0):
-    return ((1 + np.cos((np.pi)*((t/t0)-(1/2))))/2)
+def QUARTSIN(t, tx):
+    """
+    Returns a quadratic sinusoidal array of the note. 
 
-def LOG(t ,t0):
-    return (np.log10(((9*t)/t0)+1))
+    Parameters
+    ----------
+    t : ndarray
+        The time array
+    tx : float
+        The times of the note. if used for attack its the time the attack ends, etc.
+    
+    returns: ndarray
+        The quadratic sinusoidal array of the note.
+    """
+    if type(t) != np.ndarray or type(tx) != list:
+        raise TypeError
+    return np.sin(((np.pi)*t)/(2*tx[0]))
 
-def INVLOG(t, t0):
-    invlog= (np.log10(((-9*t)/t0)+10))
-    invlog[t>=t0]=0
+def HALFCOS(t, tx):
+    """
+    Returns a cosinusoidal array of the note. f = frequency, a=amplitude.
+
+    Parameters
+    ----------
+    t : ndarray
+        The time array
+    tx : float
+        The times of the note. if used for attack its the time the attack ends, etc.
+    
+    returns: ndarray
+        The cosinusoidal array of the note.
+    """
+    if type(t) != np.ndarray or type(tx) != list:
+        raise TypeError
+    return ((1 + np.cos(((np.pi)*t)/(tx[0])))/2)
+
+def HALFSIN(t, tx):
+    """
+    Returns a  half sinusoidal array of the note.
+
+    Parameters
+    ----------
+    t : ndarray
+        The time array
+    tx : float
+        The times of the note. if used for attack its the time the attack ends, etc.
+    
+    returns: ndarray
+        The half sinusoidal array of the note.
+    """
+    if type(t) != np.ndarray or type(tx) != list:
+        raise TypeError
+    return (1 + np.sin((np.pi)*((t/tx[0])-(1/2))))/2
+
+def LOG(t ,tx):
+    """
+    Returns a logarithmic array of the note.
+        
+    Parameters
+    ----------
+    t : ndarray
+        The time array
+    tx : float
+        The times of the note. if used for attack its the time the attack ends, etc.
+    
+    returns: ndarray
+        The logarithmic array of the note.
+    """
+    if type(t) != np.ndarray or type(tx) != list:
+        raise TypeError
+    return (np.log10(((9*t)/tx[0])+1))
+
+def INVLOG(t, tx):
+    """
+    Returns a inverse logarithmic array of the note.
+        
+    Parameters
+    ----------
+    t : ndarray
+        The time array
+    tx : float
+        The times of the note. if used for attack its the time the attack ends, etc.
+    
+    returns: ndarray
+        The inverse logarithmic array of the note.
+    """
+    if type(t) != np.ndarray or type(tx) != list:
+        raise TypeError
+    invlog=np.zeros(len(t))
+    invlog[t<tx]= (np.log10(((-9*t[t<tx])/tx[0])+10))
+    invlog[t>=tx[0]]=0
     return invlog
 
-def TRI(t, t0, t1, a1):
+
+def TRI(t, tx):
+    """
+    Returns a tri array of the note.
+            
+    Parameters
+    ----------
+    t : ndarray
+        The time array
+    tx : float
+        The times of the note. if used for attack its the time the attack ends, etc.
+    
+    returns: ndarray
+        The tri array of the note.
+    """
+    if type(t) != np.ndarray or type(tx) != list:
+        raise TypeError
+    t0,t1,a1=tx
     tri=t
-    tri1=(t*a1)/t1
-    tri2=((t-t1)/(t1-t0))+a1
-    tri[:t1]=tri1
-    tri[t1:]=tri2
+    tri[:int(t1*44100)]=((tri[:int(t1*44100)])*a1)/t1
+    tri[int(t1*44100):]=(((tri[int(t1*44100):])-t1)/(t0-t1))+a1
+    tri[tri>1]=1
     return tri
 
-def PULSES(t, t0, t1, a1):
-    t2= (t/t0)-np.floor(t/t0)
-    pulses=np.absolute(((1-a1)/t1)*(t2-t0-t1)) + a1
-    pulses[pulses>1]=1
+def PULSES(t, tx):
+    """
+    Returns a pulses array of the note.
+                
+        Parameters
+        ----------
+        t : ndarray
+            The time array
+        tx : float
+            The times of the note. if used for attack its the time the attack ends, etc.
+        
+        returns: ndarray
+            The pulses array of the note.
+        """
+    if type(t) != np.ndarray or type(tx) != list:
+        raise TypeError
+    t0,t1,a1=tx
+    t2=(t/t0)-np.floor(t/t0)
+    pulses=np.clip(abs( ( (1-a1) / t1 ) * (t2-t0+t1) ) + a1,None,1)
     return pulses
 
 dic_funcs={'CONSTANT':CONSTANT, 'LINEAR':LINEAR, 'INVLINEAR':INVLINEAR, 'SIN':SIN, 'EXP':EXP, 'INVEXP':INVEXP, 'QUARTCOS':QUARTCOS, 'QUARTSIN':QUARTSIN, 'HALFCOS':HALFCOS, 'HALFSIN':HALFSIN, 'LOG':LOG, 'INVLOG':INVLOG, 'TRI':TRI, 'PULSES':PULSES}
