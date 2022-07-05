@@ -21,7 +21,7 @@ def LINEAR(t, tx):
         The linear array of the note.
     
     """
-    return t/tx
+    return t/tx[0]
 
 def INVLINEAR(t, tx):
     """
@@ -37,7 +37,7 @@ def INVLINEAR(t, tx):
     returns: ndarray
         The invlinear array of the note.
     """
-    lineal = (1 - (t/tx))
+    lineal = (1 - (t/tx[0]))
     lineal[lineal<0]=0
     return lineal
 
@@ -74,7 +74,7 @@ def EXP(t, tx):
     returns: ndarray
         The exponential array of the note.
     """
-    return np.power(np.e,((5*(t - tx))/(tx)))
+    return np.power(np.e,((5*(t - tx[0]))/(tx[0])))
 
 def INVEXP(t,tx):
     """
@@ -90,7 +90,7 @@ def INVEXP(t,tx):
     returns: ndarray
         The inverse exponential array of the note.
     """
-    return np.power(np.e,((-5*t)/tx))
+    return np.power(np.e,((-5*t)/tx[0]))
 
 def QUARTCOS(t, tx):
     """
@@ -106,7 +106,7 @@ def QUARTCOS(t, tx):
     returns: ndarray
         The cosinusoidal array of the note.
     """
-    return np.cos(((np.pi)*t)/(2*tx))
+    return np.cos(((np.pi)*t)/(2*tx[0]))
 
 def QUARTSIN(t, tx):
     """
@@ -123,7 +123,7 @@ def QUARTSIN(t, tx):
         The quadratic sinusoidal array of the note.
     """
 
-    return np.sin(((np.pi)*t)/(2*tx))
+    return np.sin(((np.pi)*t)/(2*tx[0]))
 
 def HALFCOS(t, tx):
     """
@@ -140,7 +140,7 @@ def HALFCOS(t, tx):
         The cosinusoidal array of the note.
     """
     
-    return ((1 + np.cos(((np.pi)*t)/(2*tx)))/2)
+    return ((1 + np.cos(((np.pi)*t)/(2*tx[0])))/2)
 
 def HALFSIN(t, tx):
     """
@@ -156,7 +156,7 @@ def HALFSIN(t, tx):
     returns: ndarray
         The half sinusoidal array of the note.
     """
-    return ((1 + np.cos((np.pi)*((t/tx)-(1/2))))/2)
+    return ((1 + np.sin((np.pi)*((t/tx[0])-(1/2))))/2)
 
 def LOG(t ,tx):
     """
@@ -172,7 +172,7 @@ def LOG(t ,tx):
     returns: ndarray
         The logarithmic array of the note.
     """
-    return (np.log10(((9*t)/tx)+1))
+    return (np.log10(((9*t)/tx[0])+1))
 
 def INVLOG(t, tx):
     """
@@ -189,8 +189,8 @@ def INVLOG(t, tx):
         The inverse logarithmic array of the note.
     """
 
-    invlog= (np.log10(((-9*t)/tx)+10))
-    invlog[t>=tx]=0
+    invlog= (np.log10(((-9*t)/tx[0])+10))
+    invlog[t>=tx[0]]=0
     return invlog
 
 
@@ -232,8 +232,7 @@ def PULSES(t, tx):
     """
     t0,t1,a1=tx
     t2=(t/t0)-np.floor(t/t0)
-    pulses=np.absolute(((1-a1)/t1)*(t2-t0-t1)) + a1
-    pulses[pulses>1]=1
+    pulses=np.clip( abs(( (1-a1) / t1) * (t2-t0+t1)) + a1, None, 1)
     return pulses
 
 dic_funcs={'CONSTANT':CONSTANT, 'LINEAR':LINEAR, 'INVLINEAR':INVLINEAR, 'SIN':SIN, 'EXP':EXP, 'INVEXP':INVEXP, 'QUARTCOS':QUARTCOS, 'QUARTSIN':QUARTSIN, 'HALFCOS':HALFCOS, 'HALFSIN':HALFSIN, 'LOG':LOG, 'INVLOG':INVLOG, 'TRI':TRI, 'PULSES':PULSES}
