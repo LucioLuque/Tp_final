@@ -1,4 +1,3 @@
-"example of a synthesizer"
 from synthesizer import *
 from datetime import datetime
 def main():

@@ -17,11 +17,13 @@ class Synthesizer:
         self.filename_partiture = filename_partiture
         self.filename_instrument = filename_instrument
 
+
     def read_partiture(self, attack:float, decay:float) -> list:
         """
         Returns a list of notes.
         Each note is a tuple of the form (start:float, name:str, duration:float).
         """
+
         return ReadPartiture(self.filename_partiture).read_partiture(attack,decay)
 
     def read_instrument(self):
@@ -31,6 +33,7 @@ class Synthesizer:
         The second dictionary contains the modulations of the instrument.
         """
         return ReadInstrument(self.filename_instrument).read()
+
 
     def get_frequency(self, name: str) -> float:
         """
@@ -53,6 +56,7 @@ class Synthesizer:
             raise KeyError(f"{name} is not a valid note")
         else:
             return notes_mapping[name]
+
 
     def get_max_duration(self, list_of_notes: list) -> float:
         """
@@ -87,6 +91,7 @@ class Synthesizer:
         attack=modulations[0][1]
         list_of_notes=self.read_partiture(attack, decay)
         max_duration=self.get_max_duration(list_of_notes)
+
         song_duration=max_duration+decay+1 #+1 to not lose the last note
         song=np.empty(int(song_duration*song_frequency))
 
@@ -100,7 +105,7 @@ class Synthesizer:
             start=int(starts*song_frequency)
             end=len(modulated_note) + start
             song[start:end]+=modulated_note #add the modulated note to the song
-        
+
         song[song<-1]=-1 #set the song to -1 if it is less than -1
         song[song>1]=1 #set the song to 1 if it is greater than 1
         return song
@@ -119,6 +124,9 @@ class Synthesizer:
         numpy.ndarray
             The note as a numpy array
         """
+
+        if type(duration) != float:
+            raise TypeError
         return CreateArrayNote(song_frequency,duration).array_of_note()
 
     def create_armonic_note(self, frequency:float, duration:float, armonics: dict, note: np.ndarray) -> np.ndarray: 
