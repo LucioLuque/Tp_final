@@ -1,0 +1,12 @@
+mido
+pyserial
+colorama
+mypi
+flake8
+yapf
+isort
+numpy
+pytest
+argparse
+scipy
+unittest

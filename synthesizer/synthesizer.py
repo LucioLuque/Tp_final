@@ -3,8 +3,9 @@ from notes import notes_mapping
 from note import *
 from read_files import *
 from scipy.io import wavfile
+
 class Synthesizer:
-    def __init__(self, song_frequency, filename_partiture:str, filename_instrument:str):
+    def __init__(self, filename_partiture:str, filename_instrument:str):
         """
         Parameters
         ----------
@@ -13,16 +14,15 @@ class Synthesizer:
         filename_instrument : str
             The name of the file containing the instrument
         """
-        self.song_frequency=song_frequency
         self.filename_partiture = filename_partiture
         self.filename_instrument = filename_instrument
 
-    def read_partiture(self):
+    def read_partiture(self, attack:float, decay:float) -> list:
         """
         Returns a list of notes.
         Each note is a tuple of the form (start:float, name:str, duration:float).
         """
-        return ReadPartiture(self.filename_partiture).read_partiture()
+        return ReadPartiture(self.filename_partiture).read_partiture(attack,decay)
 
     def read_instrument(self):
         """
@@ -32,7 +32,7 @@ class Synthesizer:
         """
         return ReadInstrument(self.filename_instrument).read()
 
-    def get_frequency(self, name: str):
+    def get_frequency(self, name: str) -> float:
         """
         Get the frequency of a note using the name of the note as a key of the notes_mapping dictionary.
         See notes_mapping.py for the notes_mapping dictionary.
@@ -47,7 +47,6 @@ class Synthesizer:
         float
             The frequency of the note
         """
-
         if type(name) != str:
             raise TypeError(f"{name} must be str")
         if name not in notes_mapping:
@@ -55,50 +54,26 @@ class Synthesizer:
         else:
             return notes_mapping[name]
 
-    def get_max_duration(self, list_of_notes):
+    def get_max_duration(self, list_of_notes: list) -> float:
         """
-        Returns the maximum duration of the notes in the list_of_notes.
-        
+        Searchs the list of notes for the longest duration, with the sum of the start times and the duration.
+        Returns the maximum duration of the sum in the list_of_notes.
+        That will be the duration of the song.
+
         Parameters
         ----------
         list_of_notes : list
             The list of notes
-            
+
         Returns
         -------
         float
             The maximum duration of the notes"""
-        
+
         max_duration=max(list_of_notes, key=lambda x: x[0]+x[2])
         return max_duration[0]+max_duration[2]
 
-
-    def attack_is_minor_than_duration(self, list_of_notes, attack, decay):
-        """
-        Checks if the attack is minor than the duration of each note plus the decay.
-        If the attack is minor than the duration, raise a ValueError.
-
-        Parameters
-        ----------
-        list_of_notes : list
-            The list of notes
-        attack : float
-            The attack of the instrument
-        decay : float
-            The decay of the instrument
-        
-        Raises
-        ------
-        ValueError
-            If the attack is minor than the duration of each note plus the decay
-        """
-        for i in list_of_notes:
-            if (i[2]+decay)<attack:
-                raise ValueError(f"The attack={attack} is greater than the duration of the note:{i[2]}+ decay:{decay}")
-        return True
-        
-    
-    def compose(self):
+    def compose(self, song_frequency: float) -> np.ndarray:
         """
         The main function to compose the song.
         Returns the song as a numpy array.
@@ -107,23 +82,22 @@ class Synthesizer:
         numpy.ndarray
             The song as a numpy array
         """
-        list_of_notes=self.read_partiture()
         armonics, modulations=self.read_instrument()
         decay= modulations[2][1]
-        self.attack_is_minor_than_duration(list_of_notes, modulations[0][1], decay)
+        attack=modulations[0][1]
+        list_of_notes=self.read_partiture(attack, decay)
         max_duration=self.get_max_duration(list_of_notes)
-        song_duration=max_duration+decay+1
-        song=np.empty(int(song_duration*self.song_frequency))
+        song_duration=max_duration+decay+1 #+1 to not lose the last note
+        song=np.empty(int(song_duration*song_frequency))
 
         for i in list_of_notes:
             starts, name, duration=i
             frequency=self.get_frequency(name)
-            duration+=decay #add decay to the duration
-            note=self.create_note(duration)
+            note=self.create_note(song_frequency, duration)
             armonic_note=self.create_armonic_note(frequency, duration, armonics, note)
-            modulated_note=self.create_modulation( duration, modulations, armonic_note, note)
+            modulated_note=self.create_modulation( song_frequency,duration, modulations, armonic_note, note)
             
-            start=int(starts*self.song_frequency)
+            start=int(starts*song_frequency)
             end=len(modulated_note) + start
             song[start:end]+=modulated_note #add the modulated note to the song
         
@@ -131,7 +105,7 @@ class Synthesizer:
         song[song>1]=1 #set the song to 1 if it is greater than 1
         return song
 
-    def create_note(self, duration):
+    def create_note(self, song_frequency:int,duration:float) -> np.ndarray:
         """
         Returns a note of the given duration.
         
@@ -145,12 +119,12 @@ class Synthesizer:
         numpy.ndarray
             The note as a numpy array
         """
-        return CreateArrayNote(self.song_frequency,duration).array_of_note()
+        return CreateArrayNote(song_frequency,duration).array_of_note()
 
-    def create_armonic_note(self, frequency, duration, armonics, note): 
+    def create_armonic_note(self, frequency:float, duration:float, armonics: dict, note: np.ndarray) -> np.ndarray: 
         """
         Returns the armonic note of the given frequency and duration.
-        
+
         Parameters
         ----------
         frequency : float
@@ -161,7 +135,7 @@ class Synthesizer:
             The armonics of the instrument
         note : numpy.ndarray
             The note as a numpy array
-        
+
         Returns
         -------
         numpy.ndarray
@@ -169,7 +143,7 @@ class Synthesizer:
         """
         return ArmonicNote(frequency, duration, armonics).get_armonic(note)
 
-    def create_modulation(self, duration, modulations, armonic_note, note):
+    def create_modulation(self, song_frequency:int,duration:float, modulations:dict, armonic_note:np.ndarray, note:np.ndarray) -> np.ndarray:
         """
         Returns the modulated note of the given duration.
 
@@ -189,14 +163,12 @@ class Synthesizer:
         numpy.ndarray
             The modulated note as a numpy array
         """
-        return ModulatedNote(self.song_frequency, duration, modulations).modulation(armonic_note, note)
+        return ModulatedNote(song_frequency, duration, modulations).modulation(armonic_note, note)
 
-
-    def create_wav(self):
+    def create_wav(self, song_name:str, song_frequency:int):
         """
         Creates a wav file of the song. Uses the filename_partiture as the name of the file.
         """
-
-        song=self.compose()
-        song_name=self.filename_partiture.replace(".txt", ".wav")
-        return wavfile.write(song_name, self.song_frequency,  song)
+        song=self.compose(song_frequency)
+        song_name+=".wav"
+        return wavfile.write(song_name, song_frequency,  song)

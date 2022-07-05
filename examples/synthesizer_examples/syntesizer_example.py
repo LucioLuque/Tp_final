@@ -1,7 +1,7 @@
-import ...synthesizer.synthesizer as Synthesizer
+from synthesizer import synthesizer as s
 
 def main():
-    s=Synthesizer("queen.txt", "piano.txt")
+    s=s.Synthesizer("queen.txt", "piano.txt")
     s.create_wav()
 
 
