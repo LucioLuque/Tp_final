@@ -1,6 +1,6 @@
 import numpy as np
 from modulation import *
-import matplotlib.pyplot as plt
+
 class ModulatedNote:
     def __init__(self, song_frequency, duration, modulations):
         """
@@ -11,6 +11,11 @@ class ModulatedNote:
         modulations : dict
             The modulations of the instrument. See the read_files.py module.
         """
+
+        if ((type(song_frequency) != int) or (type(duration) != float) or (type(modulations) != list)):
+            print(song_frequency, duration, modulations)
+            raise TypeError
+
         self.song_frequency= song_frequency
         self.duration= duration
         self.modulations= modulations
@@ -33,6 +38,7 @@ class ModulatedNote:
     def modulation(self, armonic_note, array_of_note):
         """
         Returns the modulated note.
+
         
         Parameters
         ----------
@@ -84,9 +90,14 @@ class ArmonicNote:
         numpy.ndarray
             The armonic note as a numpy array
         """
+        if ((type(frequency) != float) 
+        or (type(duration) != float) 
+        or (type(armonics) != dict)):
+            raise TypeError
+
         self.frequency= frequency
         self.duration= duration
-        self.armonics=armonics
+        self.armonics= armonics
 
     def get_armonic(self, note):
         """
@@ -101,6 +112,10 @@ class ArmonicNote:
         numpy.ndarray
             The armonic note as a numpy array
         """
+
+        if type(note) != np.ndarray:
+            raise TypeError
+
         d=self.armonics
         armonics=np.zeros(len(note))
         for i in d:
@@ -115,6 +130,10 @@ class CreateArrayNote:
         duration : float
             The duration of the note
         """
+        if type(song_frequency) != int or type(duration) != float:
+            raise TypeError
+         
+
         self.song_frequency= song_frequency
         self.duration = duration
 

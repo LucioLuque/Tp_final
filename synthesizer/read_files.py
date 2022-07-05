@@ -1,3 +1,6 @@
+from useful_func import *
+
+
 class ReadInstrument:
     def __init__(self, filename):
         """
@@ -6,6 +9,8 @@ class ReadInstrument:
         filename : str
             The name of the file containing the instrument
         """
+        if type(filename) != str:
+            raise TypeError
 
         self.filename=filename
     
@@ -18,23 +23,38 @@ class ReadInstrument:
         armonics={}
         modulations=[]
         with open (self.filename, 'r') as f:
-            amount_armonics= int(f.readline())
+            amount_armonics= f.readline().strip()
+            if amount_armonics.isnumeric() == False:
+                raise TypeError 
+            amount_armonics= int(amount_armonics)
             for line in range(0,amount_armonics):#read the armonics
                 line=f.readline().strip().split(" ")
+                if len(line) < 2:
+                    raise ValueError
+                else:
+                    if (isfloat(line[0]) or isfloat(line[1])) ==False:
+                        raise TypeError
                 armonics[int(line[0])]= float(line[1])
 
             module_lines=(f.readlines())#read the modulations
+            if len(module_lines) < 3:
+                raise ValueError
+
             for line in module_lines:
                 l=[]
                 line=line.strip().split(" ")
                 for i in range(0,len(line)):
                     if i!=0:
+                        if isfloat(line[i]) == False:
+                            raise ValueError
                         l.append(float(line[i]))
                     else:
+                        if line[i].isalpha() == False:
+                            raise ValueError
                         l.append((line[i]))
                 modulations.append(l)
         return armonics,modulations
-        
+
 class ReadPartiture:
     def __init__(self, filename_partiture):
         """
@@ -43,7 +63,11 @@ class ReadPartiture:
         filename_partiture : str
             The name of the file containing the partiture
         """
+
+        if type(filename_partiture) != str:
+            raise TypeError
         self.filename_partiture = filename_partiture
+   
 
     def attack_is_minor_than_duration(self, duration, attack):
         """
@@ -91,8 +115,8 @@ class ReadPartiture:
             The list of notes
 
         """
-        failed_notes=0
         list_of_notes = []
+        failed_notes=0
         with open (self.filename_partiture, 'r') as f:  
             for line in f:
                 line=line.strip().split(' ')
@@ -105,5 +129,6 @@ class ReadPartiture:
                     failed_notes+=1
             if failed_notes>0:
                 print(f"Warning: There are {failed_notes} notes that are lower than the attack:{attack}, and there are not going to reproduce")
-
+            if len(list_of_notes)==0:
+                 raise ValueError(f"All the notes are lower than the attack: {attack}")
         return list_of_notes
