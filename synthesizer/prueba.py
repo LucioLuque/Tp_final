@@ -1,9 +1,10 @@
-"example of a synthesizer"
 from synthesizer import *
-from datetime import datetime
 
-instanteInicial = datetime.now()
-s=Synthesizer("BlackBird.txt", "piano.txt").create_wav("Black", 44100)
+def main():
+    """function to make examples using synthesizer code."""
+    s1=Synthesizer("BlackBird.txt", "flauta.txt").create_wav("Black", 44100)
+    s2=Synthesizer("queen.txt", "piano.txt").create_wav("BohemianRhapsody", 44100)
+    s3=Synthesizer("Rocket-Man.txt", "piano.txt").create_wav("RocketMan", 44100)
 
-instanteFinal = datetime.now()
-print(instanteFinal - instanteInicial)
+if __name__=="__main__":
+    main()
