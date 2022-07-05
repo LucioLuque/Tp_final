@@ -1,11 +1,7 @@
-from synthesizer import Synthesizer
+"example of a synthesizer"
+from synthesizer import *
 from datetime import datetime
-import matplotlib.pyplot as plt
-
-
 instanteInicial = datetime.now()
-s=Synthesizer(44100, "queen.txt", "piano.txt").create_wav()
+s=Synthesizer("BlackBird.txt", "piano.txt").create_wav("Black", 44100)
 instanteFinal = datetime.now()
 print(instanteFinal - instanteInicial)
-
-

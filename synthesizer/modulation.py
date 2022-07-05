@@ -216,7 +216,8 @@ def TRI(t, tx):
     return tri
 
 def PULSES(t, tx):
-     """
+
+    """
     Returns a pulses array of the note.
                 
     Parameters

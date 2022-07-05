@@ -11,48 +11,30 @@ class ReadInstrument:
     
     def read(self):
         """
-        Reads the instrument file and returns two dictionaries.
-        The first dictionary contains the armonics of the instrument.
-        The second dictionary contains the modulations of the instrument.
+        Reads the instrument file and returns a dictionary and a list.
+        The dictionary contains the armonics of the instrument.
+        The list contains the modulations of the instrument.
         """
         armonics={}
         modulations=[]
         with open (self.filename, 'r') as f:
             amount_armonics= int(f.readline())
-            for line in range(0,amount_armonics):
+            for line in range(0,amount_armonics):#read the armonics
                 line=f.readline().strip().split(" ")
                 armonics[int(line[0])]= float(line[1])
 
-            module_lines=(f.readlines())
-            attack=module_lines[0].strip().split(" ")
-            attack_list=[]
-            for i in attack:
-                if i!=attack[0]:
-                    attack_list.append(float(i))
-                else:
-                    attack_list.append(attack[0])
-            modulations.append((attack_list))
-
-            sustained=(module_lines[1].strip().split(" "))
-            sustained_list=[]
-            for i in sustained:
-                if i!=sustained[0]:
-                    sustained_list.append(float(i))
-                else:
-                    sustained_list.append(sustained[0])
-            modulations.append((sustained_list))
-
-            decay=(module_lines[2].strip().split(" "))
-            decay_list=[]
-            for i in decay:
-                if i!=decay[0]:
-                    decay_list.append(float(i))
-                else:
-                    decay_list.append(decay[0])
-            modulations.append((decay_list))
-
-        return armonics, modulations
-
+            module_lines=(f.readlines())#read the modulations
+            for line in module_lines:
+                l=[]
+                line=line.strip().split(" ")
+                for i in range(0,len(line)):
+                    if i!=0:
+                        l.append(float(line[i]))
+                    else:
+                        l.append((line[i]))
+                modulations.append(l)
+        return armonics,modulations
+        
 class ReadPartiture:
     def __init__(self, filename_partiture):
         """
@@ -61,15 +43,55 @@ class ReadPartiture:
         filename_partiture : str
             The name of the file containing the partiture
         """
-
-
         self.filename_partiture = filename_partiture
+
+    def attack_is_minor_than_duration(self, duration, attack):
+        """
+        Checks if the duration of each note is greater than the attack.
+        Prints a warning if the duration is smaller than the attack.It wont be added to the list of notes.
+        Returns True if the duration is greater than the attack.
+ 
+
+        Parameters
+        ----------
+        duration : float
+            The duration of the note
+        attack : float
+            The attack of the instrument
+     
+        Returns
+        -------
+        bool
+            True if the duration is greater than the attack. False otherwise.
+
+        """
+        if (duration)<=attack:
+            return False
+        else:
+            return True
         
-    def read_partiture(self):
+    def read_partiture(self, attack, decay):
         """
-        Reds the partiture file and returns a list of notes.
+        Reads the partiture file.
+        It will check if the duration is greater than the attack. See attack_is_minor_than_duration.
+        Will add the note to the list if the duration is greater than the attack.
+        Will add the decay to the duration of the note.
         Each note is a tuple of the form (start:float, name:str, duration:float).
+        
+        Parameters
+        ----------
+        attack : float
+            The attack of the instrument
+        decay : float
+            The decay of the instrument
+        
+        Returns
+        -------
+        list
+            The list of notes
+
         """
+        failed_notes=0
         list_of_notes = []
         with open (self.filename_partiture, 'r') as f:  
             for line in f:
@@ -77,5 +99,11 @@ class ReadPartiture:
                 starts=float(line[0])
                 type=line[1]
                 duration=float(line[2])
-                list_of_notes.append((starts, type, duration))
+                if self.attack_is_minor_than_duration(duration,attack): 
+                    list_of_notes.append((starts, type, duration+decay)) # add decay to the duration
+                else:
+                    failed_notes+=1
+            if failed_notes>0:
+                print(f"Warning: There are {failed_notes} notes that are lower than the attack:{attack}, and there are not going to reproduce")
+
         return list_of_notes
