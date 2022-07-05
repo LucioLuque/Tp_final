@@ -1,5 +1,6 @@
 import numpy as np
 from modulation import *
+import matplotlib.pyplot as plt
 class ModulatedNote:
     def __init__(self, song_frequency, duration, modulations):
         """
@@ -59,7 +60,7 @@ class ModulatedNote:
             m[int(self.song_frequency*first_time[0]):int(self.song_frequency*second_time[0])]=dic_funcs[keys[1]](array_of_note[int(self.song_frequency*first_time[0]):int(self.song_frequency*second_time[0])]-first_time[0],second_time)
         m[int(self.song_frequency*second_time[0]):]=m[int(self.song_frequency*second_time[0])-1]*dic_funcs[keys[2]](array_of_note[int(self.song_frequency*second_time[0]):]-second_time[0], [self.duration-second_time[0]])
         
-        modulated_note=0.07*m*armonic_note
+        modulated_note=0.02*m*armonic_note
 
         return modulated_note
 

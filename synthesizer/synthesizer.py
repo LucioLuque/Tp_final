@@ -126,7 +126,7 @@ class Synthesizer:
             start=int(starts*self.song_frequency)
             end=len(modulated_note) + start
             song[start:end]+=modulated_note #add the modulated note to the song
-
+        
         song[song<-1]=-1 #set the song to -1 if it is less than -1
         song[song>1]=1 #set the song to 1 if it is greater than 1
         return song

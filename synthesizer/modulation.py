@@ -218,7 +218,7 @@ def TRI(t, tx):
 
 
 def PULSES(t, tx):
-     """
+    """
     Returns a pulses array of the note.
                 
         Parameters
@@ -230,7 +230,7 @@ def PULSES(t, tx):
         
         returns: ndarray
             The pulses array of the note.
-        """
+    """
     t0,t1,a1=tx
     t2=(t/t0)-np.floor(t/t0)
     pulses=np.clip(abs( ( (1-a1) / t1 ) * (t2-t0+t1) ) + a1,None,1)
