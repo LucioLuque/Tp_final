@@ -38,7 +38,7 @@ def INVLINEAR(t, tx):
         The invlinear array of the note.
     """
     lineal = (1 - (t/tx[0]))
-    lineal[lineal<0]=0
+    lineal[lineal<=0]=0
     return lineal
 
 def SIN(t,tx):
@@ -140,7 +140,7 @@ def HALFCOS(t, tx):
         The cosinusoidal array of the note.
     """
     
-    return ((1 + np.cos(((np.pi)*t)/(2*tx[0])))/2)
+    return ((1 + np.cos(((np.pi)*t)/(tx[0])))/2)
 
 def HALFSIN(t, tx):
     """
