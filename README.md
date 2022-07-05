@@ -44,7 +44,7 @@ First of all, in order to communicate with the metallophone, it is necessary to 
 
 After downloading all required files, by invoking the "metallophone" file, it will be possible to communicate with the instrument in the following way:
 ```shell
-$ python3 metallophone.py -i <Music sheet name> -o <Instrument ID>
+$ python3 metallophone.py -i <Music sheet name> -o <Instrument IP>
 ```
 > Note: Put the "metallophone.py" file and the music sheet in the same folder into the folder "xylophone". 
 
