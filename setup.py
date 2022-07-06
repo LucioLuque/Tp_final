@@ -6,6 +6,6 @@ setup(
     license='MIT',
     packages=find_packages(
         where='.',
-        include=['metallophono.*', 'synthesizer.*']
+        include=['midi_to_music_sheet.*', 'metallophono.*', 'synthesizer.*']
     ),
 )
