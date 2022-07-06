@@ -17,7 +17,7 @@ def LINEAR(t, tx):
     ----------
     t : ndarray
         The time array
-    tx : float
+    tx : list
         The times of the note. if used for attack its the time the attack ends, etc.
     
     returns: ndarray
@@ -38,7 +38,7 @@ def INVLINEAR(t, tx):
     ----------
     t : ndarray
         The time array
-    tx : float
+    tx : list
         The times of the note. if used for attack its the time the attack ends, etc.
     
     returns: ndarray
@@ -60,7 +60,7 @@ def SIN(t,tx):
     ----------
     t : ndarray
         The time array
-    tx : float
+    tx : list
         The times of the note. if used for attack its the time the attack ends, etc.
     
     returns: ndarray
@@ -81,7 +81,7 @@ def EXP(t, tx):
     ----------
     t : ndarray
         The time array
-    tx : float
+    tx : list
         The times of the note. if used for attack its the time the attack ends, etc.
     
     returns: ndarray
@@ -98,7 +98,7 @@ def INVEXP(t,tx):
     ----------
     t : ndarray
         The time array
-    tx : float
+    tx : list
         The times of the note. if used for attack its the time the attack ends, etc.
     
     returns: ndarray
@@ -116,7 +116,7 @@ def QUARTCOS(t, tx):
     ----------
     t : ndarray
         The time array
-    tx : float
+    tx : list
         The times of the note. if used for attack its the time the attack ends, etc.
     
     returns: ndarray
@@ -134,7 +134,7 @@ def QUARTSIN(t, tx):
     ----------
     t : ndarray
         The time array
-    tx : float
+    tx : list
         The times of the note. if used for attack its the time the attack ends, etc.
     
     returns: ndarray
@@ -152,7 +152,7 @@ def HALFCOS(t, tx):
     ----------
     t : ndarray
         The time array
-    tx : float
+    tx : list
         The times of the note. if used for attack its the time the attack ends, etc.
     
     returns: ndarray
@@ -170,7 +170,7 @@ def HALFSIN(t, tx):
     ----------
     t : ndarray
         The time array
-    tx : float
+    tx : list
         The times of the note. if used for attack its the time the attack ends, etc.
     
     returns: ndarray
@@ -189,7 +189,7 @@ def LOG(t ,tx):
     ----------
     t : ndarray
         The time array
-    tx : float
+    tx : list
         The times of the note. if used for attack its the time the attack ends, etc.
     
     returns: ndarray
@@ -208,7 +208,7 @@ def INVLOG(t, tx):
     ----------
     t : ndarray
         The time array
-    tx : float
+    tx : list
         The times of the note. if used for attack its the time the attack ends, etc.
     
     returns: ndarray
@@ -231,7 +231,7 @@ def TRI(t, tx):
     ----------
     t : ndarray
         The time array
-    tx : float
+    tx : list
         The times of the note. if used for attack its the time the attack ends, etc.
     
     returns: ndarray
@@ -256,7 +256,7 @@ def PULSES(t, tx):
         ----------
         t : ndarray
             The time array
-        tx : float
+        tx : list
             The times of the note. if used for attack its the time the attack ends, etc.
         
         returns: ndarray
@@ -267,7 +267,6 @@ def PULSES(t, tx):
     t0,t1,a1=tx
     t2=(t/t0)-np.floor(t/t0)
     pulses=np.clip(abs( ( (1-a1) / t1 ) * (t2-t0+t1) ) + a1,None,1)
-
     return pulses
 
 dic_funcs={'CONSTANT':CONSTANT, 'LINEAR':LINEAR, 'INVLINEAR':INVLINEAR, 'SIN':SIN, 'EXP':EXP, 'INVEXP':INVEXP, 'QUARTCOS':QUARTCOS, 'QUARTSIN':QUARTSIN, 'HALFCOS':HALFCOS, 'HALFSIN':HALFSIN, 'LOG':LOG, 'INVLOG':INVLOG, 'TRI':TRI, 'PULSES':PULSES}
