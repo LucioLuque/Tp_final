@@ -2,7 +2,7 @@ import numpy as np
 from modulation import *
 
 class ModulatedNote:
-    def __init__(self, song_frequency, duration, modulations):
+    def __init__(self, song_frequency: int, duration: float, modulations:list):
         """
         Parameters
         ----------
@@ -35,7 +35,7 @@ class ModulatedNote:
         
         return modulation, first_time, second_time
     
-    def modulation(self, armonic_note, array_of_note):
+    def modulation(self, armonic_note: np.ndarray, array_of_note: np.ndarray) -> np.ndarray:
         """
         Returns the modulated note.
 
@@ -76,7 +76,7 @@ class ModulatedNote:
         return modulated_note
 
 class ArmonicNote:
-    def __init__(self, frequency, duration, armonics):
+    def __init__(self, frequency:int, duration:float, armonics:dict):
         """
         Parameters
         ----------
@@ -86,11 +86,6 @@ class ArmonicNote:
             The duration of the note
         armonics : dict
             The armonics of the instrument. See the read_files.py module.
-
-        returns
-        -------
-        numpy.ndarray
-            The armonic note as a numpy array
         """
         if ((type(frequency) != float) 
         or (type(duration) != float) 
@@ -101,7 +96,7 @@ class ArmonicNote:
         self.duration= duration
         self.armonics= armonics
 
-    def get_armonic(self, note):
+    def get_armonic(self, note:np.ndarray)->np.ndarray:
         """
         Returns the armonic note.
         
@@ -125,7 +120,7 @@ class ArmonicNote:
         return armonics
         
 class CreateArrayNote:
-    def __init__(self, song_frequency, duration):
+    def __init__(self, song_frequency:int, duration:float):
         """
         Parameters
         ----------
@@ -142,5 +137,10 @@ class CreateArrayNote:
     def array_of_note(self):
         """
         Returns the array of the note.
+
+        Returns
+        -------
+        numpy.ndarray
+            The array of the note as a numpy array
         """
         return np.linspace(0, self.duration,int(self.song_frequency*self.duration))

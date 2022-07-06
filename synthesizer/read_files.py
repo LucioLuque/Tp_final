@@ -75,7 +75,6 @@ class ReadPartiture:
         Prints a warning if the duration is smaller than the attack.It wont be added to the list of notes.
         Returns True if the duration is greater than the attack.
  
-
         Parameters
         ----------
         duration : float
@@ -101,19 +100,16 @@ class ReadPartiture:
         Will add the note to the list if the duration is greater than the attack.
         Will add the decay to the duration of the note.
         Each note is a tuple of the form (start:float, name:str, duration:float).
-        
         Parameters
         ----------
         attack : float
             The attack of the instrument
         decay : float
             The decay of the instrument
-        
         Returns
         -------
         list
             The list of notes
-
         """
         list_of_notes = []
         failed_notes=0

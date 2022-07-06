@@ -22,15 +22,25 @@ class Synthesizer:
         """
         Returns a list of notes.
         Each note is a tuple of the form (start:float, name:str, duration:float).
-        """
 
+        Parameters
+        ----------
+        attack : float
+            The attack of the instrument
+        decay : float
+            The decay of the instrument
+        Returns
+        -------
+        list
+            The list of notes
+        """
         return ReadPartiture(self.filename_partiture).read_partiture(attack,decay)
 
     def read_instrument(self):
         """
-        Returns two dictionaries.
-        The first dictionary contains the armonics of the instrument.
-        The second dictionary contains the modulations of the instrument.
+        Returns a dictionary and a list.
+        The dictionary contains the armonics of the instrument.
+        The list contains the modulations of the instrument.
         """
         return ReadInstrument(self.filename_instrument).read()
 
@@ -81,6 +91,10 @@ class Synthesizer:
         """
         The main function to compose the song.
         Returns the song as a numpy array.
+        Parameters
+        ----------
+        song_frequency : float
+            The frequency of the song
         Returns
         -------
         numpy.ndarray
@@ -94,7 +108,6 @@ class Synthesizer:
 
         song_duration=max_duration+decay+1 #+1 to not lose the last note
         song=np.empty(int(song_duration*song_frequency))
-
         for i in list_of_notes:
             starts, name, duration=i
             frequency=self.get_frequency(name)
@@ -151,7 +164,7 @@ class Synthesizer:
         """
         return ArmonicNote(frequency, duration, armonics).get_armonic(note)
 
-    def create_modulation(self, song_frequency:int,duration:float, modulations:dict, armonic_note:np.ndarray, note:np.ndarray) -> np.ndarray:
+    def create_modulation(self, song_frequency:int,duration:float, modulations:list, armonic_note:np.ndarray, note:np.ndarray) -> np.ndarray:
         """
         Returns the modulated note of the given duration.
 
@@ -159,7 +172,7 @@ class Synthesizer:
         ----------
         duration : float
             The duration of the note
-        modulations : dict
+        modulations : list
             The modulations of the instrument
         armonic_note : numpy.ndarray
             The armonic note as a numpy array
@@ -176,6 +189,17 @@ class Synthesizer:
     def create_wav(self, song_name:str, song_frequency:int):
         """
         Creates a wav file of the song. Uses the filename_partiture as the name of the file.
+
+        Parameters
+        ----------
+        song_name : str
+            The name of the song
+        song_frequency : int
+            The frequency of the song
+        
+        Returns
+        -------
+        A wav file of the song
         """
         song=self.compose(song_frequency)
         song_name+=".wav"
