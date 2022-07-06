@@ -35,7 +35,7 @@ $ python3 midi2score.py -i <MIDI File> -o <Output File> -t <Tracks(CSV)>
 When the requested score has already been created, you will be able to create the wave file. To achieve this, it is necessary to perform the following actions: 
 
 ```shell
-$ python3 prog.py -f <Frequency> -i <Instrument> -p <Music sheet> -o <Audio.wav>
+$ python3 argparse_synthesizer -p <Music sheet> -i <Instrument> -o <Audio.wav> -f <Frecuency>
 ```
 > Note: The wave file will be generated in the folder "synthesizer".
 ### Metallophono 
